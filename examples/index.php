@@ -12,8 +12,33 @@
 
 
     // the form tag
-    $formStart = $formBuilder->FormStart("index.php", "GET");
-    $formEnd = $formBuilder->FormEnd();
+    $formStart = $formBuilder->formStart("index.php", "GET");
+    $formEnd = $formBuilder->formEnd();
+
+
+    // input type text
+    $inputFirstnameAttributes = [
+        "class" => "firstname",
+        "id" => "firstname",
+        "required" => true
+    ];
+    $inputFirstnameSurroundAttributes = [
+        "class" => "form-control",
+        "id" => "username"
+    ];
+    $inputFirstname = $formBuilder->input("Firstname", "firstname", null, $inputFirstnameAttributes, "div", $inputFirstnameSurroundAttributes);
+
+    // input type password
+    $inputPasswordAttributes = [
+        "class" => "password",
+        "id" => "password",
+        "required" => true
+    ];
+    $inputPasswordSurroundAttributes = [
+        "class" => "form-control",
+        "id" => "password"
+    ];
+    $inputPassword = $formBuilder->input("Password", "password", "password", $inputPasswordAttributes, "div", $inputPasswordSurroundAttributes);
 ?>
 
 
@@ -29,20 +54,8 @@
         <div class="container">
             <!-- form -->
             <?= $formStart; ?>
-                <div>
-                    <label for="firstname">Firstname:</label>
-                    <input type="text" id="firstname" name="firstname">
-                </div>
-
-                <div>
-                    <label for="lastname">Lastname:</label>
-                    <input type="text" id="lastname" name="lastname">
-                </div>
-
-                <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password">
-                </div>
+                <?= $inputFirstname; ?>
+                <?= $inputPassword; ?>
 
                 <div>
                     <label for="content">Content:</label>
