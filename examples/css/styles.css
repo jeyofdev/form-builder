@@ -1,0 +1,63 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+form > div {
+    margin-bottom: 20px;
+}
+
+form > div:last-child {
+    margin-bottom: 0;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input, form textarea {
+    font-size: 1em;
+    width: 100%;
+    border: 1px solid rgb(0, 123, 255);
+    border-radius: 5px;
+    outline: none;
+}
+
+form input:focus, form textarea:focus {
+    background: rgb(198, 217, 238);
+}
+
+form input {
+    height: 40px;
+}
+
+form textarea {
+    resize: none;
+}
+
+form .btn {
+    background: rgb(0, 123, 255);
+    font-size: 1em;
+    color: white;
+    padding: 10px 10px;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
