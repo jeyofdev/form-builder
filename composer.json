@@ -1,0 +1,21 @@
+{
+    "name": "jeyofdev/form-builder",
+    "description": "A simple class to generate a form",
+    "keywords": ["form", "input", "html", "php"],
+    "authors": [
+        {
+            "name": "jeyofdev",
+            "email": "jgregoire.pro@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "filp/whoops": "^2.5",
+        "symfony/var-dumper": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\Form\\Builder\\": "src/"
+        }
+    }
+}
