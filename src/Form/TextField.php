@@ -3,13 +3,13 @@
     namespace App\Form\Builder\Form;
 
 
-    use App\Form\Builder\Exception\InputsException;
+    use App\Form\Builder\Exception\TextFieldException;
 
 
     /**
-     * Manage the input form field
+     * Manage the text form fields
      */
-    class Inputs
+    class TextField
     {
         /**
          * The types of allowed form fields
@@ -30,7 +30,7 @@
          *
          * @var string
          */
-        private static $input;
+        private static $field;
 
 
 
@@ -39,17 +39,17 @@
          *
          * @return string
          */
-        public static function getInput () : string
+        public static function getfield () : string
         {
-            return self::$input;
+            return self::$field;
         }
 
 
 
         /**
-         * Set the form field generated
+         * Set an input form field
          *
-         * @param  string      $label              The label of the field
+         * @param  string|null $label              The label of the field
          * @param  string      $inputName          The name attribute of the field
          * @param  string|null $inputType          The type attribute of the field
          * @param  array       $inputAttributes    The attributes of the field
@@ -57,20 +57,50 @@
          * @param  array       $surroundAttributes The attributes of the tag that surrounds the field
          * @return void
          */
-        public static function setInput (string $label, string $inputName, ?string $inputType, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
+        public static function setInput (?string $label = null, string $inputName, ?string $inputType, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
         {
             $inputType = !is_null($inputType) ? $inputType : "text";
 
             if (in_array($inputType, self::INPUT_TYPES_ALLOWED)) {
                 $attr = self::listAttributes($inputAttributes);
 
-                $input = '<label for="' . $inputName . '">' . $label . ' :</label>';
+                $input = '';
+                if (!is_null($label)) {
+                    $input .= '<label for="' . $inputName . '">' . $label . ' :</label>';
+                }
+
                 $input .= '<input type="' . $inputType . '" name="' . $inputName . '" ' . $attr . '>';
     
-                self::$input = self::setSurround($input, $surround, $surroundAttributes);
+                self::$field = self::setSurround($input, $surround, $surroundAttributes);
             } else {
-                throw new InputsException("The type of the form field is not allowed");
+                throw new TextFieldException("The type of the form field is not allowed");
             }
+        }
+
+
+
+        /**
+         * Set a textarea form field
+         *
+         * @param  string|null $label              The label of the textarea
+         * @param  string      $textareaName       The name attribute of the textarea
+         * @param  array       $textareaAttributes The attributes of the textarea
+         * @param  string|null $surround           The tag that surrounds the textarea
+         * @param  array       $surroundAttributes The attributes of the tag that surrounds the textarea
+         * @return void
+         */
+        public static function setTextarea (?string $label, string $textareaName, array $textareaAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
+        {
+            $attr = self::listAttributes($textareaAttributes);
+
+            $textarea = '';
+            if (!is_null($label)) {
+                $textarea = '<label for="' . $textareaName . '">' . $label . ' :</label>';
+            }
+
+            $textarea .= '<textarea name="' . $textareaName . '" ' . $attr . '></textarea>';
+
+            self::$field = self::setSurround($textarea, $surround, $surroundAttributes);
         }
 
 

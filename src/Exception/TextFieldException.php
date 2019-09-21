@@ -6,7 +6,7 @@
     use Exception;
 
 
-    final class InputsException extends Exception
+    final class TextFieldException extends Exception
     {
 
     }

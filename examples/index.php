@@ -28,6 +28,7 @@
     ];
     $inputFirstname = $formBuilder->input("Firstname", "firstname", null, $inputFirstnameAttributes, "div", $inputFirstnameSurroundAttributes);
 
+
     // input type password
     $inputPasswordAttributes = [
         "class" => "password",
@@ -39,6 +40,20 @@
         "id" => "password"
     ];
     $inputPassword = $formBuilder->input("Password", "password", "password", $inputPasswordAttributes, "div", $inputPasswordSurroundAttributes);
+
+
+    // textarea
+    $contentAttributes = [
+        "class" => "content",
+        "id" => "content",
+        "rows" => 8,
+        "required" => true
+    ];
+    $contentSurroundAttributes = [
+        "class" => "form-control",
+        "id" => "content"
+    ];
+    $content = $formBuilder->textarea(null, "content", $contentAttributes, "div", $contentSurroundAttributes);
 ?>
 
 
@@ -56,11 +71,7 @@
             <?= $formStart; ?>
                 <?= $inputFirstname; ?>
                 <?= $inputPassword; ?>
-
-                <div>
-                    <label for="content">Content:</label>
-                    <textarea name="content" id="content" name="password" rows="5"></textarea>
-                </div>
+                <?= $content; ?>
 
                 <div>
                     <button type="submit" class="btn">Envoyer</button>
