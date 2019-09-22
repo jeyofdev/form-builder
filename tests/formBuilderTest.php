@@ -108,6 +108,31 @@
         /**
          * @test
          */
+        public function testAddInputFile() : void
+        {
+            $fileAttributes = [
+                "class" => "upload",
+                "id" => "upload",
+                "multiple" => true
+            ];
+
+            $fileSurroundAttributes = [
+                "class" => "form-control",
+            ];
+
+            $file = $this->getFormBuilder()->input("Select the file to send", "upload", "file", $fileAttributes, "div", $fileSurroundAttributes);
+        
+            $this->assertEquals(
+                '<div class="form-control"><label for="upload">Select the file to send :</label><input type="file" name="upload" class="upload" id="upload" multiple></div>',
+                $file
+            );
+        }
+
+
+
+        /**
+         * @test
+         */
         public function testAddTextareaWithSurround() : void
         {
             $contentAttributes = [

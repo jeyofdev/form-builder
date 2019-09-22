@@ -113,6 +113,17 @@
     ];
     $hidden = $formBuilder->hidden("postId", $hiddenAttributes);
 
+
+    // file
+    $fileAttributes = [
+        "class" => "upload",
+        "id" => "upload",
+        "multiple" => true
+    ];
+    $fileSurroundAttributes = [
+        "class" => "form-control",
+    ];
+    $file = $formBuilder->input("Select the file to send", "upload", "file", $fileAttributes, "div", $fileSurroundAttributes);
 ?>
 
 
@@ -144,6 +155,7 @@
 
                 <?= $select; ?>
                 <?= $hidden; ?>
+                <?= $file; ?>
 
                 <div>
                     <button type="submit" class="btn">Envoyer</button>

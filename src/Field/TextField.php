@@ -14,7 +14,7 @@
         /**
          * The allowed types for the input form fields
          */
-        const INPUT_TYPES_ALLOWED = ["text", "password"];
+        const INPUT_TYPES_ALLOWED = ["text", "password", "file"];
 
 
 
