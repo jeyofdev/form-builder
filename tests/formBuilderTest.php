@@ -201,4 +201,29 @@
                 $checkbox
             );
         }
+
+
+
+        /**
+         * @test
+         */
+        public function testAddSelect() : void
+        {
+            $selectAttributes = [
+                "class" => "langage",
+                "id" => "langage"
+            ];
+
+            $selectSurroundAttributes = [
+                "class" => "form-control",
+            ];
+
+            $selectOptions = ["php", "javascript", "java"];
+            $select = $this->getFormBuilder()->select("Langages", "langage", $selectAttributes, $selectOptions, 2, "div", $selectSurroundAttributes);
+
+            $this->assertEquals(
+                '<div class="form-control"><label for="langage">Langages :</label><select name="langage" class="langage" id="langage"><option value="0" >php</option><option value="1" >javascript</option><option value="2" selected>java</option></select></div>',
+                $select
+            );
+        }
     }

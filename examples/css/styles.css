@@ -37,7 +37,9 @@ form label {
 }
 
 form input[type="text"],
-form input[type="password"], form textarea {
+form input[type="password"],
+form textarea,
+form select {
     font-size: 1em;
     width: 100%;
     border: 1px solid rgb(0, 123, 255);
@@ -58,7 +60,7 @@ form input:focus, form textarea:focus {
     background: rgb(198, 217, 238);
 }
 
-form input {
+form input, form select {
     height: 40px;
 }
 

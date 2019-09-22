@@ -138,4 +138,42 @@
                 throw new TextFieldException("The type must be radio or checkbox");
             }
         }
+
+
+
+        /**
+         * Set a select field
+         *
+         * @param  string|null  $label              The label of the select
+         * @param  string       $selectName         The name attribute of the select
+         * @param  array        $selectAttributes   The attributes of the select
+         * @param  array        $options            The options of the select
+         * @param  integer|null $optionsSelected    The selected option of the select
+         * @param  string|null  $surround           The tag that surrounds the select
+         * @param  array        $surroundAttributes The attributes of the tag that surrounds the select
+         * @return void
+         */
+        public static function setSelect (?string $label = null, string $selectName, array $selectAttributes = [], array $options = [], ?int $optionsSelected = null, ?string $surround = null, array $surroundAttributes = []) : void
+        {
+            $attr = self::listAttributes($selectAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
+
+            $select = '';
+            if (!is_null($label)) {
+                $select .= '<label for="' . $selectName . '">' . $label . ' :</label>';
+            }
+
+            $selectOptions = [];
+            foreach ($options as $k => $v) {
+                $selected = ($k === $optionsSelected) ? "selected" : null;
+                $selectOptions[] = '<option value="' . $k . '" ' . $selected . '>' . $v . '</option>';
+            }
+
+            $selectOptions = implode('', $selectOptions);
+
+            $select .= '<select name="' . $selectName . '" ' . $attr . '>';
+            $select .= $selectOptions;
+            $select .= '</select>';
+
+            self::$field = self::setSurround($select, $surround, $surroundAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
+        }
     }

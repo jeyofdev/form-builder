@@ -108,7 +108,27 @@
          */
         public function checkbox (string $label, string $caseName, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
-            TextField::setCase($label, $caseName, "checnbkbox", $caseValue, $caseAttributes, $surround, $surroundAttributes);
+            TextField::setCase($label, $caseName, "checkbox", $caseValue, $caseAttributes, $surround, $surroundAttributes);
+            return TextField::getField();
+        }
+
+
+
+        /**
+         * Set a select
+         *
+         * @param  string|null  $label              The label of the select
+         * @param  string       $selectName         The name attribute of the select
+         * @param  array        $selectAttributes   The attributes of the select
+         * @param  array        $options            The options of the select
+         * @param  integer|null $optionsSelected    The selected option of the select
+         * @param  string|null  $surround           The tag that surrounds the select
+         * @param  array        $surroundAttributes The attributes of the tag that surrounds the select
+         * @return string
+         */
+        public function select (?string $label, string $selectName, array $selectAttributes = [], array $options = [], ?int $optionsSelected = null, ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            TextField::setSelect($label, $selectName, $selectAttributes, $options, $optionsSelected, $surround, $surroundAttributes);
             return TextField::getField();
         }
     }

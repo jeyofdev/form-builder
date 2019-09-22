@@ -93,6 +93,17 @@
     ];
     $checkbox2 = $formBuilder->checkbox("Amerique", "amerique", "amerique", $choiceAttributes, "div", $choiceSurroundAttributes);
 
+
+    // select
+    $selectAttributes = [
+        "class" => "langage",
+        "id" => "langage",
+    ];
+    $selectSurroundAttributes = [
+        "class" => "form-control",
+    ];
+    $selectOptions = ["php", "javascript", "java"];
+    $select = $formBuilder->select("Langages", "langage", $selectAttributes, $selectOptions, 2, "div", $selectSurroundAttributes);
 ?>
 
 
@@ -121,6 +132,8 @@
                     <?= $checkbox; ?>
                     <?= $checkbox2; ?>
                 </div>
+
+                <?= $select; ?>
 
                 <div>
                     <button type="submit" class="btn">Envoyer</button>
