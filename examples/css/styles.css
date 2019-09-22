@@ -75,11 +75,19 @@ form textarea {
 }
 
 form .btn {
-    background: rgb(0, 123, 255);
+    display: inline-block;
     font-size: 1em;
     color: white;
     padding: 10px 10px;
     border-radius: 5px;
     outline: none;
     cursor: pointer;
+}
+
+form button[type="submit"] {
+    background: rgb(0, 123, 255);
+}
+
+form button[type="reset"] {
+    background: rgb(209, 44, 44);
 }

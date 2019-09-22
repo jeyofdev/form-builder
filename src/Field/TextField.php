@@ -190,7 +190,27 @@
         {
             $attr = self::listAttributes($hiddenAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
             $hidden = '<input type="hidden" name="' . $hiddenName . '" ' . $attr . '>';
-    
+
             self::$field = $hidden;
+        }
+
+
+
+        /**
+         * Set a button
+         *
+         * @param  string      $label               The label of the button
+         * @param  string      $buttonType          The button type (submit or reset)
+         * @param  array       $buttonAttributes    The attributes of the button
+         * @param  string|null  $surround           The tag that surrounds the button
+         * @param  array        $surroundAttributes The attributes of the tag that surrounds the button
+         * @return void
+         */
+        public static function setButton (string $label, string $buttonType, array $buttonAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
+        {
+            $attr = self::listAttributes($buttonAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
+            $button = '<button type="' . $buttonType . '" ' . $attr . '>' . $label . '</button>';
+
+            self::$field = self::setSurround($button, $surround, $surroundAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
         }
     }

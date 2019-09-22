@@ -146,4 +146,59 @@
             TextField::setHidden($hiddenName, $hiddenAttributes);
             return TextField::getField();
         }
+
+
+
+        /**
+         * set a file field
+         *
+         * @param  string|null $label              The label of the field
+         * @param  string      $inputName          The name attribute of the field
+         * @param  string|null $inputType          The type attribute of the field
+         * @param  array       $inputAttributes    The attributes of the field
+         * @param  string|null $surround           The tag that surrounds the field
+         * @param  array       $surroundAttributes The attributes of the tag that surrounds the field
+         * @return string
+         */
+        public function file (?string $label, string $inputName, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            TextField::setInput($label, $inputName, "file", $inputAttributes, $surround, $surroundAttributes);
+            return TextField::getField();
+        }
+
+
+
+        /**
+         * Set a submit button
+         *
+         * @param  string       $label               The label of the button
+         * @param  string       $buttonType          The button type (submit or reset)
+         * @param  array        $buttonAttributes    The attributes of the button
+         * @param  string|null  $surround            The tag that surrounds the select
+         * @param  array        $surroundAttributes  The attributes of the tag that surrounds the select
+         * @return string
+         */
+        public function submit (string $label, array $buttonAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            TextField::setButton($label, "submit", $buttonAttributes, $surround, $surroundAttributes);
+            return TextField::getField();
+        }
+
+
+
+        /**
+         * Set a reset button
+         *
+         * @param  string       $label               The label of the button
+         * @param  string       $buttonType          The button type (submit or reset)
+         * @param  array        $buttonAttributes    The attributes of the button
+         * @param  string|null  $surround            The tag that surrounds the select
+         * @param  array        $surroundAttributes The attributes of the tag that surrounds the select
+         * @return string
+         */
+        public function reset (string $label, array $buttonAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            TextField::setButton($label, "reset", $buttonAttributes, $surround, $surroundAttributes);
+            return TextField::getField();
+        }
     }

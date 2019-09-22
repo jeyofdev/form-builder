@@ -114,7 +114,7 @@
     $hidden = $formBuilder->hidden("postId", $hiddenAttributes);
 
 
-    // file
+    // input type file
     $fileAttributes = [
         "class" => "upload",
         "id" => "upload",
@@ -123,7 +123,28 @@
     $fileSurroundAttributes = [
         "class" => "form-control",
     ];
-    $file = $formBuilder->input("Select the file to send", "upload", "file", $fileAttributes, "div", $fileSurroundAttributes);
+    $file = $formBuilder->file("Sélectionner le fichier à envoyer", "upload", $fileAttributes, "div", $fileSurroundAttributes);
+
+
+
+    // submit
+    $submitAttributes = [
+        "class" => "btn"
+    ];
+    $submitSurroundAttributes = [
+        "class" => "form-control"
+    ];
+    $submit = $formBuilder->submit("Submit", $submitAttributes);
+
+
+    // reset
+    $resetAttributes = [
+        "class" => "btn"
+    ];
+    $resetSurroundAttributes = [
+        "class" => "form-control"
+    ];
+    $reset = $formBuilder->reset("Reset", $resetAttributes);
 ?>
 
 
@@ -155,11 +176,11 @@
 
                 <?= $select; ?>
                 <?= $hidden; ?>
+
                 <?= $file; ?>
 
-                <div>
-                    <button type="submit" class="btn">Envoyer</button>
-                </div>
+                <?= $submit; ?>
+                <?= $reset; ?>
             <?= $formEnd; ?>
         </div>
     </body>

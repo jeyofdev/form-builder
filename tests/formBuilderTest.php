@@ -120,7 +120,7 @@
                 "class" => "form-control",
             ];
 
-            $file = $this->getFormBuilder()->input("Select the file to send", "upload", "file", $fileAttributes, "div", $fileSurroundAttributes);
+            $file = $this->getFormBuilder()->file("Select the file to send", "upload", $fileAttributes, "div", $fileSurroundAttributes);
         
             $this->assertEquals(
                 '<div class="form-control"><label for="upload">Select the file to send :</label><input type="file" name="upload" class="upload" id="upload" multiple></div>',
@@ -266,5 +266,31 @@
             $hidden = $this->getFormBuilder()->hidden("postId", $hiddenAttributes);
 
             $this->assertEquals('<input type="hidden" name="postId" id="postId" value="5">', $hidden);
+        }
+
+
+
+        /**
+         * @test
+         */
+        public function testAddButtonSubmit() : void
+        {
+            $submitAttributes = ["class" => "btn"];
+            $submit = $this->getFormBuilder()->submit("Submit", $submitAttributes);
+
+            $this->assertEquals('<button type="submit" class="btn">Submit</button>', $submit);
+        }
+
+
+
+        /**
+         * @test
+         */
+        public function testAddButtonReset() : void
+        {
+            $resetAttributes = ["class" => "btn"];
+            $reset = $this->getFormBuilder()->reset("Reset", $resetAttributes);
+
+            $this->assertEquals('<button type="reset" class="btn">Reset</button>', $reset);
         }
     }
