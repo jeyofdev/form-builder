@@ -3,8 +3,8 @@
     namespace App\Form\Builder;
 
 
+    use App\Form\Builder\Field\TextField;
     use App\Form\Builder\Form\Form;
-    use App\Form\Builder\Form\TextField;
 
 
     /**
@@ -71,6 +71,44 @@
         public function textarea (?string $label, string $textareaName, array $textareaAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
             TextField::setTextarea($label, $textareaName, $textareaAttributes, $surround, $surroundAttributes);
+            return TextField::getField();
+        }
+
+
+
+        /**
+         * Set a radio button
+         *
+         * @param  string      $label              The label of the radio button or checkbox
+         * @param  string      $caseName           The name attribute of the radio button or checkbox
+         * @param  array       $caseAttributes     The attributes of the radio button or checkbox
+         * @param  string      $caseValue          The value attribute of the radio button or checkbox
+         * @param  string|null $surround           The tag that surrounds the radio button or checkbox
+         * @param  array       $surroundAttributes The attributes of the tag that surrounds the radio button or checkbox
+         * @return string
+         */
+        public function radio (string $label, string $caseName, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            TextField::setCase($label, $caseName, "radio", $caseValue, $caseAttributes, $surround, $surroundAttributes);
+            return TextField::getField();
+        }
+
+
+
+        /**
+         * Set a checkbox
+         *
+         * @param  string      $label              The label of the radio button or checkbox
+         * @param  string      $caseName           The name attribute of the radio button or checkbox
+         * @param  array       $caseAttributes     The attributes of the radio button or checkbox
+         * @param  string      $caseValue          The value attribute of the radio button or checkbox
+         * @param  string|null $surround           The tag that surrounds the radio button or checkbox
+         * @param  array       $surroundAttributes The attributes of the tag that surrounds the radio button or checkbox
+         * @return string
+         */
+        public function checkbox (string $label, string $caseName, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            TextField::setCase($label, $caseName, "checnbkbox", $caseValue, $caseAttributes, $surround, $surroundAttributes);
             return TextField::getField();
         }
     }

@@ -23,8 +23,12 @@ form > div {
     margin-bottom: 20px;
 }
 
-form > div:last-child {
+form .form-check {
     margin-bottom: 0;
+}
+
+form > div:last-child {
+    margin-bottom: 20px;
 }
 
 form label {
@@ -32,12 +36,22 @@ form label {
     margin-bottom: 5px;
 }
 
-form input, form textarea {
+form input[type="text"],
+form input[type="password"], form textarea {
     font-size: 1em;
     width: 100%;
     border: 1px solid rgb(0, 123, 255);
     border-radius: 5px;
     outline: none;
+}
+
+form input[type="radio"], form input[type="checkbox"]{
+    height: auto;
+}
+
+form input[type="radio"] ~ label,
+form input[type="checkbox"] ~ label {
+    display: inline-block;
 }
 
 form input:focus, form textarea:focus {

@@ -1,6 +1,6 @@
 <?php
 
-    namespace App\Form\Builder\Form;
+    namespace App\Form\Builder\Field;
 
 
     use App\Form\Builder\Exception\TextFieldException;
@@ -9,19 +9,27 @@
     /**
      * Manage the text form fields
      */
-    class TextField
+    class TextField extends Field
     {
         /**
-         * The types of allowed form fields
+         * The allowed types for the input form fields
          */
         const INPUT_TYPES_ALLOWED = ["text", "password"];
 
 
 
         /**
+         * The allowed types for radio buttons and checkboxes
+         */
+        const CASE_TYPES_ALLOWED = ["radio", "checkbox"];
+
+
+
+        /**
          * The Form Field Attributes allowed with Boolean Values
          */
-        const ATTRIBUTES_WITH_BOOLEAN_VALUES_ALLOWED = ["autofocus", "readonly", "required"];
+        const ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED = ["autofocus", "readonly", "required"];
+        const ATTRIBUTES_CASE_WITH_BOOLEAN_VALUES_ALLOWED = ["autofocus", "readonly", "required", "checked"];
 
 
 
@@ -62,7 +70,7 @@
             $inputType = !is_null($inputType) ? $inputType : "text";
 
             if (in_array($inputType, self::INPUT_TYPES_ALLOWED)) {
-                $attr = self::listAttributes($inputAttributes);
+                $attr = self::listAttributes($inputAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
 
                 $input = '';
                 if (!is_null($label)) {
@@ -71,7 +79,7 @@
 
                 $input .= '<input type="' . $inputType . '" name="' . $inputName . '" ' . $attr . '>';
     
-                self::$field = self::setSurround($input, $surround, $surroundAttributes);
+                self::$field = self::setSurround($input, $surround, $surroundAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
             } else {
                 throw new TextFieldException("The type of the form field is not allowed");
             }
@@ -91,7 +99,7 @@
          */
         public static function setTextarea (?string $label, string $textareaName, array $textareaAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
         {
-            $attr = self::listAttributes($textareaAttributes);
+            $attr = self::listAttributes($textareaAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
 
             $textarea = '';
             if (!is_null($label)) {
@@ -100,60 +108,34 @@
 
             $textarea .= '<textarea name="' . $textareaName . '" ' . $attr . '></textarea>';
 
-            self::$field = self::setSurround($textarea, $surround, $surroundAttributes);
+            self::$field = self::setSurround($textarea, $surround, $surroundAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
         }
 
 
 
         /**
-         * Surround a form field with HTML tags
+         * Set a radio button or checkbox
          *
-         * @param  string      $input      The form field to surround
-         * @param  string|null $surround   The tag of the surround
-         * @param  array       $attributes The attributes of the surround
-         * @return string
+         * @param  string      $label              The label of the radio button or checkbox
+         * @param  string      $caseName           The name attribute of the radio button or checkbox
+         * @param  string      $caseType           The type attribute of the radio button or checkbox
+         * @param  string      $caseValue          The value attribute of the radio button or checkbox
+         * @param  array       $caseAttributes     The attributes of the radio button or checkbox
+         * @param  string|null $surround           The tag that surrounds the radio button or checkbox
+         * @param  array       $surroundAttributes The attributes of the tag that surrounds the radio button or checkbox
+         * @return void
          */
-        private static function setSurround(string $input, ?string $surround = null, array $attributes = []): string
+        public static function setCase (string $label, string $caseName, string $caseType, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
         {
-            $attr = null;
+            if (in_array($caseType, self::CASE_TYPES_ALLOWED)) {
+                $attr = self::listAttributes($caseAttributes, self::ATTRIBUTES_CASE_WITH_BOOLEAN_VALUES_ALLOWED);
 
-            if($surround != null){
-                if (!empty($attributes)) {
-                    $attr = self::listAttributes($attributes);
-                }
-
-                $surroundInput = '<' . $surround . ' ' . $attr . '>';
-                $surroundInput .= $input;
-                $surroundInput .= '</' . $surround . '>';
-            } else{
-                $surroundInput = $input;
+                $case = '<input type="' . $caseType . '" id="' . $caseValue . '" name="' . $caseName . '" value="' . $caseValue . '" ' . $attr . '>';
+                $case .= '<label for="' . $caseValue . '">' . $label . ' :</label>';
+                
+                self::$field = self::setSurround($case, $surround, $surroundAttributes, self::ATTRIBUTES_CASE_WITH_BOOLEAN_VALUES_ALLOWED);
+            } else {
+                throw new TextFieldException("The type must be radio or checkbox");
             }
-
-            return $surroundInput;
-        }
-
-
-
-        /**
-         * Get the list of attributes of a form field
-         *
-         * @param  array $attributes The attributes of a form field
-         * @return string
-         */
-        private static function listAttributes (array $attributes) : string
-        {
-            $attr = [];
-
-            foreach ($attributes as $k => $v) {
-                if (in_array($v, self::ATTRIBUTES_WITH_BOOLEAN_VALUES_ALLOWED)) {
-                    $attr[] = $k;
-                } else {
-                    $attr[] = $k . '="' . $v . '"';
-                }
-            }
-
-            $attr = implode(" ", $attr);
-
-            return $attr;
         }
     }

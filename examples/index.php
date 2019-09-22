@@ -54,6 +54,45 @@
         "id" => "content"
     ];
     $content = $formBuilder->textarea(null, "content", $contentAttributes, "div", $contentSurroundAttributes);
+
+
+    // radio
+    $choiceAttributes = [
+        "class" => "content",
+        "checked" => true
+    ];
+    $choiceSurroundAttributes = [
+        "class" => "form-check",
+    ];
+    $radio = $formBuilder->radio("England", "country", "england", $choiceAttributes, "div", $choiceSurroundAttributes);
+
+    $choiceAttributes = [
+        "class" => "content",
+    ];
+    $choiceSurroundAttributes = [
+        "class" => "form-check",
+    ];
+    $radio2 = $formBuilder->radio("France", "country", "france", $choiceAttributes, "div", $choiceSurroundAttributes);
+
+
+
+    // checkbox
+    $choiceAttributes = [
+        "class" => "content",
+    ];
+    $choiceSurroundAttributes = [
+        "class" => "form-check",
+    ];
+    $checkbox = $formBuilder->checkbox("Europe", "europe", "europe", $choiceAttributes, "div", $choiceSurroundAttributes);
+
+    $choiceAttributes = [
+        "class" => "content",
+    ];
+    $choiceSurroundAttributes = [
+        "class" => "form-check",
+    ];
+    $checkbox2 = $formBuilder->checkbox("Amerique", "amerique", "amerique", $choiceAttributes, "div", $choiceSurroundAttributes);
+
 ?>
 
 
@@ -72,6 +111,16 @@
                 <?= $inputFirstname; ?>
                 <?= $inputPassword; ?>
                 <?= $content; ?>
+
+                <div class="row">
+                    <?= $radio; ?>
+                    <?= $radio2; ?>
+                </div>
+
+                <div class="row">
+                    <?= $checkbox; ?>
+                    <?= $checkbox2; ?>
+                </div>
 
                 <div>
                     <button type="submit" class="btn">Envoyer</button>

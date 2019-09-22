@@ -154,4 +154,51 @@
                 $textareaContent
             );
         }
+
+
+
+        /**
+         * @test
+         */
+        public function testAddRadio() : void
+        {
+            $radioAttributes = [
+                "class" => "content",
+                "checked" => true
+            ];
+
+            $radioSurroundAttributes = [
+                "class" => "form-check",
+            ];
+
+            $radio = $this->getFormBuilder()->radio("England", "country", "england", $radioAttributes, "div", $radioSurroundAttributes);
+                    
+            $this->assertEquals(
+                '<div class="form-check"><input type="radio" id="england" name="country" value="england" class="content" checked><label for="england">England :</label></div>',
+                $radio
+            );
+        }
+
+
+
+        /**
+         * @test
+         */
+        public function testAddCheckbox() : void
+        {
+            $checkboxAttributes = [
+                "class" => "content",
+            ];
+
+            $checkboxSurroundAttributes = [
+                "class" => "form-check",
+            ];
+
+            $checkbox = $this->getFormBuilder()->checkbox("Europe", "europe", "europe", $checkboxAttributes, "div", $checkboxSurroundAttributes);
+
+            $this->assertEquals(
+                '<div class="form-check"><input type="checkbox" id="europe" name="europe" value="europe" class="content"><label for="europe">Europe :</label></div>',
+                $checkbox
+            );
+        }
     }
