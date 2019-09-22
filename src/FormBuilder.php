@@ -131,4 +131,19 @@
             TextField::setSelect($label, $selectName, $selectAttributes, $options, $optionsSelected, $surround, $surroundAttributes);
             return TextField::getField();
         }
+
+
+
+        /**
+         * Set a hidden field
+         *
+         * @param  string $hiddenName       The name attribute of the hidden field
+         * @param  array  $hiddenAttributes The attributes of the hidden field
+         * @return string
+         */
+        public function hidden (string $hiddenName, array $hiddenAttributes = []) : string
+        {
+            TextField::setHidden($hiddenName, $hiddenAttributes);
+            return TextField::getField();
+        }
     }

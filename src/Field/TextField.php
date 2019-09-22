@@ -176,4 +176,21 @@
 
             self::$field = self::setSurround($select, $surround, $surroundAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
         }
+
+
+
+        /**
+         * Set a hidden field
+         *
+         * @param  string $hiddenName       The name attribute of the hidden field
+         * @param  array  $hiddenAttributes The attributes of the hidden field
+         * @return void
+         */
+        public static function setHidden (string $hiddenName, array $hiddenAttributes = []) : void
+        {
+            $attr = self::listAttributes($hiddenAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
+            $hidden = '<input type="hidden" name="' . $hiddenName . '" ' . $attr . '>';
+    
+            self::$field = $hidden;
+        }
     }

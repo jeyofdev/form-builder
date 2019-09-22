@@ -226,4 +226,20 @@
                 $select
             );
         }
+
+
+
+        /**
+         * @test
+         */
+        public function testAddHidden() : void
+        {
+            $hiddenAttributes = [
+                "id" => "postId",
+                "value" => 5
+            ];
+            $hidden = $this->getFormBuilder()->hidden("postId", $hiddenAttributes);
+
+            $this->assertEquals('<input type="hidden" name="postId" id="postId" value="5">', $hidden);
+        }
     }

@@ -104,6 +104,15 @@
     ];
     $selectOptions = ["php", "javascript", "java"];
     $select = $formBuilder->select("Langages", "langage", $selectAttributes, $selectOptions, 2, "div", $selectSurroundAttributes);
+
+
+    // hidden
+    $hiddenAttributes = [
+        "id" => "postId",
+        "value" => 5
+    ];
+    $hidden = $formBuilder->hidden("postId", $hiddenAttributes);
+
 ?>
 
 
@@ -134,6 +143,7 @@
                 </div>
 
                 <?= $select; ?>
+                <?= $hidden; ?>
 
                 <div>
                     <button type="submit" class="btn">Envoyer</button>
