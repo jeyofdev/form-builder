@@ -40,16 +40,33 @@
          */
         public function testAddInputText() : void
         {
-            $inputFirstnameAttributes = [
+            $fieldAttributes = [
                 "class" => "firstname",
                 "id" => "firstname",
                 "required" => true
             ];
+            $field = $this->getFormBuilder()->input("Firstname", "firstname", null, $fieldAttributes);
 
-            $addInputText = $this->getFormBuilder()->input("Firstname", "firstname", null, $inputFirstnameAttributes);
             $this->assertEquals(
                 '<label for="firstname">Firstname :</label><input type="text" name="firstname" class="firstname" id="firstname" required>',
-                $addInputText
+                $field
+            );
+        }
+
+
+
+        public function testAddInputTextWithoutLabel() : void
+        {
+            $fieldAttributes = [
+                "class" => "firstname",
+                "id" => "firstname",
+                "required" => true
+            ];
+            $field = $this->getFormBuilder()->input(null, "firstname", null, $fieldAttributes);
+
+            $this->assertEquals(
+                '<input type="text" name="firstname" class="firstname" id="firstname" required>',
+                $field
             );
         }
 
@@ -60,21 +77,17 @@
          */
         public function testAddInputTextWithSurround() : void
         {
-            $inputFirstnameAttributes = [
+            $fieldAttributes = [
                 "class" => "firstname",
                 "id" => "firstname",
                 "required" => true
             ];
+            $field = $this->getFormBuilder()->input("Firstname", "firstname", null, $fieldAttributes);
+            $fieldWithsurround = $this->getFormBuilder()->row("div", ["class" => "form-control", "id" => "username"], $field);
 
-            $inputFirstnameSurroundAttributes = [
-                "class" => "form-control",
-                "id" => "username"
-            ];
-
-            $addInputText = $this->getFormBuilder()->input("Firstname", "firstname", null, $inputFirstnameAttributes, "div", $inputFirstnameSurroundAttributes);
             $this->assertEquals(
                 '<div class="form-control" id="username"><label for="firstname">Firstname :</label><input type="text" name="firstname" class="firstname" id="firstname" required></div>', 
-                $addInputText
+                $fieldWithsurround
             );
         }
 
@@ -83,23 +96,18 @@
         /**
          * @test
          */
-        public function testAddInputPasswordWithSurround() : void
+        public function testAddInputPassword() : void
         {
-            $inputPasswordAttributes = [
+            $fieldAttributes = [
                 "class" => "password",
                 "id" => "password",
                 "required" => true
             ];
+            $field = $this->getFormBuilder()->input("Password", "password", null, $fieldAttributes);
 
-            $inputPasswordSurroundAttributes = [
-                "class" => "form-control",
-                "id" => "username"
-            ];
-
-            $addInputPassword = $this->getFormBuilder()->input("Password", "password", null, $inputPasswordAttributes, "div", $inputPasswordSurroundAttributes);
             $this->assertEquals(
-                '<div class="form-control" id="username"><label for="password">Password :</label><input type="text" name="password" class="password" id="password" required></div>', 
-                $addInputPassword
+                '<label for="password">Password :</label><input type="text" name="password" class="password" id="password" required>',
+                $field
             );
         }
 
@@ -110,21 +118,16 @@
          */
         public function testAddInputFile() : void
         {
-            $fileAttributes = [
+            $fieldAttributes = [
                 "class" => "upload",
                 "id" => "upload",
                 "multiple" => true
             ];
+            $field = $this->getFormBuilder()->file("Select the file to send", "upload", $fieldAttributes);
 
-            $fileSurroundAttributes = [
-                "class" => "form-control",
-            ];
-
-            $file = $this->getFormBuilder()->file("Select the file to send", "upload", $fileAttributes, "div", $fileSurroundAttributes);
-        
             $this->assertEquals(
-                '<div class="form-control"><label for="upload">Select the file to send :</label><input type="file" name="upload" class="upload" id="upload" multiple></div>',
-                $file
+                '<label for="upload">Select the file to send :</label><input type="file" name="upload" class="upload" id="upload" multiple>',
+                $field
             );
         }
 
@@ -135,22 +138,17 @@
          */
         public function testAddTextareaWithSurround() : void
         {
-            $contentAttributes = [
+            $fieldAttributes = [
                 "class" => "content",
                 "id" => "content",
                 "rows" => 8,
                 "required" => true
             ];
+            $field = $this->getFormBuilder()->textarea("Content", "content", $fieldAttributes);
 
-            $contentSurroundAttributes = [
-                "class" => "form-control",
-                "id" => "content"
-            ];
-
-            $textareaContent = $this->getFormBuilder()->textarea("Content", "content", $contentAttributes, "div", $contentSurroundAttributes);
             $this->assertEquals(
-                '<div class="form-control" id="content"><label for="content">Content :</label><textarea name="content" class="content" id="content" rows="8" required></textarea></div>',
-                $textareaContent
+                '<label for="content">Content :</label><textarea name="content" class="content" id="content" rows="8" required></textarea>',
+                $field
             );
         }
 
@@ -159,24 +157,19 @@
         /**
          * @test
          */
-        public function testAddTextareaWithoutLabelWithSurround() : void
+        public function testAddTextarea() : void
         {
-            $contentAttributes = [
+            $fieldAttributes = [
                 "class" => "content",
                 "id" => "content",
                 "rows" => 8,
                 "required" => true
             ];
 
-            $contentSurroundAttributes = [
-                "class" => "form-control",
-                "id" => "content"
-            ];
-
-            $textareaContent = $this->getFormBuilder()->textarea(null, "content", $contentAttributes, "div", $contentSurroundAttributes);
+            $field = $this->getFormBuilder()->textarea(null, "content", $fieldAttributes);
             $this->assertEquals(
-                '<div class="form-control" id="content"><textarea name="content" class="content" id="content" rows="8" required></textarea></div>',
-                $textareaContent
+                '<textarea name="content" class="content" id="content" rows="8" required></textarea>',
+                $field
             );
         }
 
@@ -187,20 +180,15 @@
          */
         public function testAddRadio() : void
         {
-            $radioAttributes = [
+            $fieldAttributes = [
                 "class" => "content",
                 "checked" => true
             ];
+            $field = $this->getFormBuilder()->radio("England", "country", "england", $fieldAttributes);
 
-            $radioSurroundAttributes = [
-                "class" => "form-check",
-            ];
-
-            $radio = $this->getFormBuilder()->radio("England", "country", "england", $radioAttributes, "div", $radioSurroundAttributes);
-                    
             $this->assertEquals(
-                '<div class="form-check"><input type="radio" id="england" name="country" value="england" class="content" checked><label for="england">England :</label></div>',
-                $radio
+                '<input type="radio" id="england" name="country" value="england" class="content" checked><label for="england">England :</label>',
+                $field
             );
         }
 
@@ -211,19 +199,15 @@
          */
         public function testAddCheckbox() : void
         {
-            $checkboxAttributes = [
+            $fieldAttributes = [
                 "class" => "content",
             ];
 
-            $checkboxSurroundAttributes = [
-                "class" => "form-check",
-            ];
-
-            $checkbox = $this->getFormBuilder()->checkbox("Europe", "europe", "europe", $checkboxAttributes, "div", $checkboxSurroundAttributes);
+            $field = $this->getFormBuilder()->checkbox("Europe", "europe", "europe", $fieldAttributes);
 
             $this->assertEquals(
-                '<div class="form-check"><input type="checkbox" id="europe" name="europe" value="europe" class="content"><label for="europe">Europe :</label></div>',
-                $checkbox
+                '<input type="checkbox" id="europe" name="europe" value="europe" class="content"><label for="europe">Europe :</label>',
+                $field
             );
         }
 
@@ -234,21 +218,16 @@
          */
         public function testAddSelect() : void
         {
-            $selectAttributes = [
+            $fieldAttributes = [
                 "class" => "langage",
                 "id" => "langage"
             ];
-
-            $selectSurroundAttributes = [
-                "class" => "form-control",
-            ];
-
-            $selectOptions = ["php", "javascript", "java"];
-            $select = $this->getFormBuilder()->select("Langages", "langage", $selectAttributes, $selectOptions, 2, "div", $selectSurroundAttributes);
+            $fieldOptions = ["php", "javascript", "java"];
+            $field = $this->getFormBuilder()->select("Langages", "langage", $fieldAttributes, $fieldOptions, 2);
 
             $this->assertEquals(
-                '<div class="form-control"><label for="langage">Langages :</label><select name="langage" class="langage" id="langage"><option value="0" >php</option><option value="1" >javascript</option><option value="2" selected>java</option></select></div>',
-                $select
+                '<label for="langage">Langages :</label><select name="langage" class="langage" id="langage"><option value="0" >php</option><option value="1" >javascript</option><option value="2" selected>java</option></select>',
+                $field
             );
         }
 
@@ -275,10 +254,10 @@
          */
         public function testAddButtonSubmit() : void
         {
-            $submitAttributes = ["class" => "btn"];
-            $submit = $this->getFormBuilder()->submit("Submit", $submitAttributes);
+            $buttonAttributes = ["class" => "btn"];
+            $button = $this->getFormBuilder()->submit("Submit", $buttonAttributes);
 
-            $this->assertEquals('<button type="submit" class="btn">Submit</button>', $submit);
+            $this->assertEquals('<button type="submit" class="btn">Submit</button>', $button);
         }
 
 
@@ -288,9 +267,9 @@
          */
         public function testAddButtonReset() : void
         {
-            $resetAttributes = ["class" => "btn"];
-            $reset = $this->getFormBuilder()->reset("Reset", $resetAttributes);
+            $buttonAttributes = ["class" => "btn"];
+            $button = $this->getFormBuilder()->reset("Reset", $buttonAttributes);
 
-            $this->assertEquals('<button type="reset" class="btn">Reset</button>', $reset);
+            $this->assertEquals('<button type="reset" class="btn">Reset</button>', $button);
         }
     }

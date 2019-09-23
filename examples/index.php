@@ -22,11 +22,7 @@
         "id" => "firstname",
         "required" => true
     ];
-    $inputFirstnameSurroundAttributes = [
-        "class" => "form-control",
-        "id" => "username"
-    ];
-    $inputFirstname = $formBuilder->input("Firstname", "firstname", null, $inputFirstnameAttributes, "div", $inputFirstnameSurroundAttributes);
+    $inputFirstname = $formBuilder->input("Firstname", "firstname", null, $inputFirstnameAttributes);
 
 
     // input type password
@@ -35,11 +31,7 @@
         "id" => "password",
         "required" => true
     ];
-    $inputPasswordSurroundAttributes = [
-        "class" => "form-control",
-        "id" => "password"
-    ];
-    $inputPassword = $formBuilder->input("Password", "password", "password", $inputPasswordAttributes, "div", $inputPasswordSurroundAttributes);
+    $inputPassword = $formBuilder->input("Password", "password", "password", $inputPasswordAttributes);
 
 
     // textarea
@@ -49,11 +41,7 @@
         "rows" => 8,
         "required" => true
     ];
-    $contentSurroundAttributes = [
-        "class" => "form-control",
-        "id" => "content"
-    ];
-    $content = $formBuilder->textarea(null, "content", $contentAttributes, "div", $contentSurroundAttributes);
+    $content = $formBuilder->textarea("Content", "content", $contentAttributes);
 
 
     // radio
@@ -61,18 +49,12 @@
         "class" => "content",
         "checked" => true
     ];
-    $choiceSurroundAttributes = [
-        "class" => "form-check",
-    ];
-    $radio = $formBuilder->radio("England", "country", "england", $choiceAttributes, "div", $choiceSurroundAttributes);
+    $radio = $formBuilder->radio("England", "country", "england", $choiceAttributes, "div", ["class" => "choice"]);
 
     $choiceAttributes = [
         "class" => "content",
     ];
-    $choiceSurroundAttributes = [
-        "class" => "form-check",
-    ];
-    $radio2 = $formBuilder->radio("France", "country", "france", $choiceAttributes, "div", $choiceSurroundAttributes);
+    $radio2 = $formBuilder->radio("France", "country", "france", $choiceAttributes, "div");
 
 
 
@@ -80,30 +62,21 @@
     $choiceAttributes = [
         "class" => "content",
     ];
-    $choiceSurroundAttributes = [
-        "class" => "form-check",
-    ];
-    $checkbox = $formBuilder->checkbox("Europe", "europe", "europe", $choiceAttributes, "div", $choiceSurroundAttributes);
+    $checkbox = $formBuilder->checkbox("Europe", "europe", "europe", $choiceAttributes, "div");
 
     $choiceAttributes = [
         "class" => "content",
     ];
-    $choiceSurroundAttributes = [
-        "class" => "form-check",
-    ];
-    $checkbox2 = $formBuilder->checkbox("Amerique", "amerique", "amerique", $choiceAttributes, "div", $choiceSurroundAttributes);
+    $checkbox2 = $formBuilder->checkbox("Amerique", "amerique", "amerique", $choiceAttributes, "div");
 
 
     // select
     $selectAttributes = [
-        "class" => "langage",
-        "id" => "langage",
-    ];
-    $selectSurroundAttributes = [
-        "class" => "form-control",
+        "class" => "language",
+        "id" => "language",
     ];
     $selectOptions = ["php", "javascript", "java"];
-    $select = $formBuilder->select("Langages", "langage", $selectAttributes, $selectOptions, 2, "div", $selectSurroundAttributes);
+    $select = $formBuilder->select("Languages", "language", $selectAttributes, $selectOptions, 2);
 
 
     // hidden
@@ -120,10 +93,7 @@
         "id" => "upload",
         "multiple" => true
     ];
-    $fileSurroundAttributes = [
-        "class" => "form-control",
-    ];
-    $file = $formBuilder->file("Sélectionner le fichier à envoyer", "upload", $fileAttributes, "div", $fileSurroundAttributes);
+    $file = $formBuilder->file("Select the file to send", "upload", $fileAttributes);
 
 
 
@@ -131,18 +101,12 @@
     $submitAttributes = [
         "class" => "btn"
     ];
-    $submitSurroundAttributes = [
-        "class" => "form-control"
-    ];
     $submit = $formBuilder->submit("Submit", $submitAttributes);
 
 
     // reset
     $resetAttributes = [
         "class" => "btn"
-    ];
-    $resetSurroundAttributes = [
-        "class" => "form-control"
     ];
     $reset = $formBuilder->reset("Reset", $resetAttributes);
 ?>
@@ -160,27 +124,19 @@
         <div class="container">
             <!-- form -->
             <?= $formStart; ?>
-                <?= $inputFirstname; ?>
-                <?= $inputPassword; ?>
-                <?= $content; ?>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "username"], $inputFirstname); ?>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "password"], $inputPassword); ?>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "content"], $content); ?>
 
-                <div class="row">
-                    <?= $radio; ?>
-                    <?= $radio2; ?>
-                </div>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "radio"], $radio, $radio2); ?>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "checkbox"], $checkbox, $checkbox2); ?>
 
-                <div class="row">
-                    <?= $checkbox; ?>
-                    <?= $checkbox2; ?>
-                </div>
-
-                <?= $select; ?>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "languages"], $select); ?>
                 <?= $hidden; ?>
 
-                <?= $file; ?>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "upload"], $file); ?>
 
-                <?= $submit; ?>
-                <?= $reset; ?>
+                <?= $formBuilder->row("div", ["class" => "form-control", "id" => "button-form"], $submit, $reset); ?>
             <?= $formEnd; ?>
         </div>
     </body>

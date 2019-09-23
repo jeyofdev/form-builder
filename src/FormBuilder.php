@@ -2,7 +2,7 @@
 
     namespace App\Form\Builder;
 
-
+    use App\Form\Builder\Field\Surround;
     use App\Form\Builder\Field\TextField;
     use App\Form\Builder\Form\Form;
 
@@ -42,12 +42,12 @@
         /**
          * Set an input form field
          *
-         * @param  string|null $label              The label of the field
-         * @param  string      $inputName          The name attribute of the field
-         * @param  string|null $inputType          The type attribute of the field
-         * @param  array       $inputAttributes    The attributes of the field
-         * @param  string|null $surround           The tag that surrounds the field
-         * @param  array       $surroundAttributes The attributes of the tag that surrounds the field
+         * @param  string|null $label              The label of the input
+         * @param  string      $inputName          The name attribute of the input
+         * @param  string|null $inputType          The type attribute of the input
+         * @param  array       $inputAttributes    The attributes of the input
+         * @param  string      $surround            The tag that surrounds the input
+         * @param  array       $surroundAttributes  The attributes of the surround
          * @return string
          */
         public function input (?string $label, string $inputName, ?string $inputType, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
@@ -64,8 +64,8 @@
          * @param  string|null $label              The label of the textarea
          * @param  string      $textareaName       The name attribute of the textarea
          * @param  array       $textareaAttributes The attributes of the textarea
-         * @param  string|null $surround           The tag that surrounds the textarea
-         * @param  array       $surroundAttributes The attributes of the tag that surrounds the textarea
+         * @param  string      $surround           The tag that surrounds the textarea
+         * @param  array       $surroundAttributes The attributes of the surround
          * @return string
          */
         public function textarea (?string $label, string $textareaName, array $textareaAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
@@ -79,12 +79,12 @@
         /**
          * Set a radio button
          *
-         * @param  string      $label              The label of the radio button or checkbox
-         * @param  string      $caseName           The name attribute of the radio button or checkbox
-         * @param  array       $caseAttributes     The attributes of the radio button or checkbox
-         * @param  string      $caseValue          The value attribute of the radio button or checkbox
-         * @param  string|null $surround           The tag that surrounds the radio button or checkbox
-         * @param  array       $surroundAttributes The attributes of the tag that surrounds the radio button or checkbox
+         * @param  string  $label              The label of the radio button
+         * @param  string  $caseName           The name attribute of the radio button
+         * @param  array   $caseAttributes     The attributes of the radio button
+         * @param  string  $caseValue          The value attribute of the radio button
+         * @param  string  $surround           The tag that surrounds the radio button
+         * @param  array   $surroundAttributes The attributes of the surround
          * @return string
          */
         public function radio (string $label, string $caseName, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
@@ -98,12 +98,12 @@
         /**
          * Set a checkbox
          *
-         * @param  string      $label              The label of the radio button or checkbox
-         * @param  string      $caseName           The name attribute of the radio button or checkbox
-         * @param  array       $caseAttributes     The attributes of the radio button or checkbox
-         * @param  string      $caseValue          The value attribute of the radio button or checkbox
-         * @param  string|null $surround           The tag that surrounds the radio button or checkbox
-         * @param  array       $surroundAttributes The attributes of the tag that surrounds the radio button or checkbox
+         * @param  string  $label              The label of the checkbox
+         * @param  string  $caseName           The name attribute of the checkbox
+         * @param  array   $caseAttributes     The attributes of the checkbox
+         * @param  string  $caseValue          The value attribute of the checkbox
+         * @param  string  $surround            The tag that surrounds the checkbox
+         * @param  array   $surroundAttributes  The attributes of the surround
          * @return string
          */
         public function checkbox (string $label, string $caseName, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
@@ -122,8 +122,8 @@
          * @param  array        $selectAttributes   The attributes of the select
          * @param  array        $options            The options of the select
          * @param  integer|null $optionsSelected    The selected option of the select
-         * @param  string|null  $surround           The tag that surrounds the select
-         * @param  array        $surroundAttributes The attributes of the tag that surrounds the select
+         * @param  string       $surround           The tag that surrounds the select
+         * @param  array        $surroundAttributes The attributes of the surround
          * @return string
          */
         public function select (?string $label, string $selectName, array $selectAttributes = [], array $options = [], ?int $optionsSelected = null, ?string $surround = null, array $surroundAttributes = []) : string
@@ -137,8 +137,8 @@
         /**
          * Set a hidden field
          *
-         * @param  string $hiddenName       The name attribute of the hidden field
-         * @param  array  $hiddenAttributes The attributes of the hidden field
+         * @param  string  $hiddenName       The name attribute of the hidden field
+         * @param  array   $hiddenAttributes The attributes of the hidden field
          * @return string
          */
         public function hidden (string $hiddenName, array $hiddenAttributes = []) : string
@@ -156,8 +156,8 @@
          * @param  string      $inputName          The name attribute of the field
          * @param  string|null $inputType          The type attribute of the field
          * @param  array       $inputAttributes    The attributes of the field
-         * @param  string|null $surround           The tag that surrounds the field
-         * @param  array       $surroundAttributes The attributes of the tag that surrounds the field
+         * @param  string      $surround            The tag that surrounds the field
+         * @param  array       $surroundAttributes  The attributes of the surround
          * @return string
          */
         public function file (?string $label, string $inputName, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
@@ -171,11 +171,10 @@
         /**
          * Set a submit button
          *
-         * @param  string       $label               The label of the button
-         * @param  string       $buttonType          The button type (submit or reset)
-         * @param  array        $buttonAttributes    The attributes of the button
-         * @param  string|null  $surround            The tag that surrounds the select
-         * @param  array        $surroundAttributes  The attributes of the tag that surrounds the select
+         * @param  string  $label               The label of the button
+         * @param  array   $buttonAttributes    The attributes of the button
+         * @param  string  $surround            The tag that surrounds the button
+         * @param  array   $surroundAttributes  The attributes of the surround
          * @return string
          */
         public function submit (string $label, array $buttonAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
@@ -189,16 +188,30 @@
         /**
          * Set a reset button
          *
-         * @param  string       $label               The label of the button
-         * @param  string       $buttonType          The button type (submit or reset)
-         * @param  array        $buttonAttributes    The attributes of the button
-         * @param  string|null  $surround            The tag that surrounds the select
-         * @param  array        $surroundAttributes The attributes of the tag that surrounds the select
+         * @param  string  $label               The label of the button
+         * @param  array   $buttonAttributes    The attributes of the button
+         * @param  string  $surround            The tag that surrounds the button
+         * @param  array   $surroundAttributes  The attributes of the surround
          * @return string
          */
         public function reset (string $label, array $buttonAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
             TextField::setButton($label, "reset", $buttonAttributes, $surround, $surroundAttributes);
             return TextField::getField();
+        }
+
+
+
+        /**
+         * Surround the form fields with HTML tags
+         *
+         * @param  string $surround   The tag that surrounds the field
+         * @param  array  $attributes The attributes of the surround
+         * @param  string ...$inputs  The fields to surround
+         * @return void
+         */
+        public function row (string $surround, array $attributes = [], string ...$inputs) : string
+        {
+            return Surround::row($surround, $attributes, $inputs);
         }
     }

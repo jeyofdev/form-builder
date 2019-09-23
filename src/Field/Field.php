@@ -9,32 +9,25 @@
     abstract class Field
     {
         /**
-         * Surround a form field with HTML tags
-         *
-         * @param  string      $input      The form field to surround
-         * @param  string|null $surround   The tag of the surround
-         * @param  array       $attributes The attributes of the surround
-         * @param  array       $compare    The comparison array
-         * @return string
+         * The allowed types for the input form fields
          */
-        protected static function setSurround(string $input, ?string $surround = null, array $attributes = [], array $compare): string
-        {
-            $attr = null;
+        const INPUT_TYPES_ALLOWED = ["text", "password", "file"];
 
-            if($surround != null){
-                if (!empty($attributes)) {
-                    $attr = self::listAttributes($attributes, $compare);
-                }
 
-                $surroundInput = '<' . $surround . ' ' . $attr . '>';
-                $surroundInput .= $input;
-                $surroundInput .= '</' . $surround . '>';
-            } else{
-                $surroundInput = $input;
-            }
 
-            return $surroundInput;
-        }
+        /**
+         * The allowed types for radio buttons and checkboxes
+         */
+        const CASE_TYPES_ALLOWED = ["radio", "checkbox"];
+
+
+
+        /**
+         * The Field Attributes allowed with Boolean Values
+         */
+        const ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED = [
+            "autofocus", "disabled", "readonly", "required", "checked", "multiple"
+        ];
 
 
 
