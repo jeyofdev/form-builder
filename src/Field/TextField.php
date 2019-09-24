@@ -38,13 +38,15 @@
          * @param  string|null $label              The label of the input
          * @param  string      $inputName          The name attribute of the input
          * @param  string|null $inputType          The type attribute of the input
+         * @param  mixed       $inputValue         The value attribute of the input
          * @param  array       $inputAttributes    The attributes of the input
          * @param  string      $surround           The tag that surrounds the input
          * @param  array       $surroundAttributes The attributes of the surround
          * @return void
          */
-        public static function setInput (?string $label = null, string $inputName, ?string $inputType, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
+        public static function setInput (?string $label = null, string $inputName, $inputValue, ?string $inputType, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
         {
+            $value = (!is_null($inputValue)) ? 'value="' . $inputValue . '" ' : null;
             $inputType = !is_null($inputType) ? $inputType : "text";
 
             if (in_array($inputType, self::INPUT_TYPES_ALLOWED)) {
@@ -54,7 +56,7 @@
                 if (!is_null($label)) {
                     $field .= '<label for="' . $inputName . '">' . $label . ' :</label>';
                 }
-                $field .= '<input type="' . $inputType . '" name="' . $inputName . '" ' . $attr . '>';
+                $field .= '<input type="' . $inputType . '" name="' . $inputName . '" ' . $value . $attr . '>';
 
                 self::$field = self::setField($field, $surround, $surroundAttributes);
             } else {
@@ -69,20 +71,22 @@
          *
          * @param  string|null $label              The label of the textarea
          * @param  string      $textareaName       The name attribute of the textarea
+         * @param  mixed       $textareaValue      The value attribute of the textarea
          * @param  array       $textareaAttributes The attributes of the textarea
          * @param  string      $surround           The tag that surrounds the textarea
          * @param  array       $surroundAttributes The attributes of the surround
          * @return void
          */
-        public static function setTextarea (?string $label, string $textareaName, array $textareaAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
+        public static function setTextarea (?string $label, string $textareaName, $textareaValue, array $textareaAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
         {
+            $value = (!is_null($textareaValue)) ? $textareaValue : null;
             $attr = self::listAttributes($textareaAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
 
             $field = '';
             if (!is_null($label)) {
                 $field = '<label for="' . $textareaName . '">' . $label . ' :</label>';
             }
-            $field .= '<textarea name="' . $textareaName . '" ' . $attr . '></textarea>';
+            $field .= '<textarea name="' . $textareaName . '" ' . $attr . '>' . $value . '</textarea>';
 
             self::$field = self::setField($field, $surround, $surroundAttributes);
         }
@@ -96,17 +100,20 @@
          * @param  string  $caseName           The name attribute of the radio button or checkbox
          * @param  string  $caseType           The type attribute of the radio button or checkbox
          * @param  string  $caseValue          The value attribute of the radio button or checkbox
+         * @param  bool    $checked            The checked attribute of the radio button or checkbox
          * @param  array   $caseAttributes     The attributes of the radio button or checkbox
          * @param  string  $surround           The tag that surrounds the radio button or checkbox
          * @param  array   $surroundAttributes The attributes of the surround
          * @return void
          */
-        public static function setCase (string $label, string $caseName, string $caseType, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
+        public static function setCase (string $label, string $caseName, string $caseType, string $caseValue, bool $checked, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : void
         {
             if (in_array($caseType, self::CASE_TYPES_ALLOWED)) {
                 $attr = self::listAttributes($caseAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
 
-                $field = '<input type="' . $caseType . '" id="' . $caseValue . '" name="' . $caseName . '" value="' . $caseValue . '" ' . $attr . '>';
+                $checked = $checked ? ' checked' : null;
+
+                $field = '<input type="' . $caseType . '" id="' . $caseValue . '" name="' . $caseName . '" value="' . $caseValue . '" ' . $attr . $checked . '>';
                 $field .= '<label for="' . $caseValue . '">' . $label . ' :</label>';
 
                 self::$field = self::setField($field, $surround, $surroundAttributes);
@@ -122,6 +129,7 @@
          *
          * @param  string|null  $label              The label of the select
          * @param  string       $selectName         The name attribute of the select
+         * @param  mixed|null   $selectValue        The value attribute of the select
          * @param  array        $selectAttributes   The attributes of the select
          * @param  array        $options            The options of the select
          * @param  integer|null $optionsSelected    The selected option of the select
@@ -129,7 +137,7 @@
          * @param  array        $surroundAttributes The attributes of the surround
          * @return void
          */
-        public static function setSelect (?string $label = null, string $selectName, array $selectAttributes = [], array $options = [], ?int $optionsSelected = null, ?string $surround = null, array $surroundAttributes = []) : void
+        public static function setSelect (?string $label = null, string $selectName, $selectValue, array $selectAttributes = [], array $options = [], ?int $optionsSelected = null, ?string $surround = null, array $surroundAttributes = []) : void
         {
             $attr = self::listAttributes($selectAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
 
@@ -138,7 +146,9 @@
                 $field .= '<label for="' . $selectName . '">' . $label . ' :</label>';
             }
 
+            $optionsSelected = (!is_null($selectValue)) ? (int)$selectValue : $optionsSelected;
             $selectOptions = [];
+
             foreach ($options as $k => $v) {
                 $selected = ($k === $optionsSelected) ? "selected" : null;
                 $selectOptions[] = '<option value="' . $k . '" ' . $selected . '>' . $v . '</option>';
@@ -158,14 +168,17 @@
         /**
          * Set a hidden field
          *
-         * @param  string $hiddenName       The name attribute of the hidden field
-         * @param  array  $hiddenAttributes The attributes of the hidden field
+         * @param  string      $hiddenName       The name attribute of the hidden field
+         * @param  mixed|null  $hiddenValue      The value attribute of the hidden field
+         * @param  array       $hiddenAttributes The attributes of the hidden field
          * @return void
          */
-        public static function setHidden (string $hiddenName, array $hiddenAttributes = []) : void
+        public static function setHidden (string $hiddenName, $hiddenValue, array $hiddenAttributes = []) : void
         {
+            $value = (!is_null($hiddenValue)) ? 'value="' . $hiddenValue . '" ' : null;
             $attr = self::listAttributes($hiddenAttributes, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED);
-            $field = '<input type="hidden" name="' . $hiddenName . '" ' . $attr . '>';
+
+            $field = '<input type="hidden" name="' . $hiddenName . '" ' . $value . $attr . '>';
 
             self::$field = self::setField($field);
         }

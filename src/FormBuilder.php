@@ -13,6 +13,37 @@
     class FormBuilder
     {
         /**
+         * The form datas
+         *
+         * @var array
+         */
+        private $datas;
+
+
+
+        /**
+         * @param array $datas 
+         */
+        public function __construct (array $datas)
+        {
+            $this->datas = $datas;
+        }
+
+
+
+        /**
+         * Get the form datas
+         *
+         * @return array
+         */
+        public function getDatas () : array
+        {
+            return $this->datas;
+        }
+
+
+
+        /**
          * Set the start tag of a form
          *
          * @param  string|null $action the action attribute
@@ -52,7 +83,9 @@
          */
         public function input (?string $label, string $inputName, ?string $inputType, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
-            TextField::setInput($label, $inputName, $inputType, $inputAttributes, $surround, $surroundAttributes);
+            $value = $this->getValue($inputName);
+            TextField::setInput($label, $inputName, $value, $inputType, $inputAttributes, $surround, $surroundAttributes);
+
             return TextField::getField();
         }
 
@@ -70,7 +103,9 @@
          */
         public function textarea (?string $label, string $textareaName, array $textareaAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
-            TextField::setTextarea($label, $textareaName, $textareaAttributes, $surround, $surroundAttributes);
+            $value = $this->getValue($textareaName);
+            TextField::setTextarea($label, $textareaName, $value, $textareaAttributes, $surround, $surroundAttributes);
+
             return TextField::getField();
         }
 
@@ -83,13 +118,22 @@
          * @param  string  $caseName           The name attribute of the radio button
          * @param  array   $caseAttributes     The attributes of the radio button
          * @param  string  $caseValue          The value attribute of the radio button
+         * @param  array   $checked            The checked attributes of the radio button
          * @param  string  $surround           The tag that surrounds the radio button
          * @param  array   $surroundAttributes The attributes of the surround
          * @return string
          */
-        public function radio (string $label, string $caseName, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        public function radio (string $label, string $caseName, string $caseValue, bool $checked = false, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
-            TextField::setCase($label, $caseName, "radio", $caseValue, $caseAttributes, $surround, $surroundAttributes);
+            if (!empty($this->datas)) {
+                if (array_key_exists($caseName, $this->datas)) {
+                    if ($this->datas[$caseName] === $caseValue) {
+                        $checked = true;
+                    }
+                }
+            }
+            
+            TextField::setCase($label, $caseName, "radio", $caseValue, $checked, $caseAttributes, $surround, $surroundAttributes);
             return TextField::getField();
         }
 
@@ -102,13 +146,15 @@
          * @param  string  $caseName           The name attribute of the checkbox
          * @param  array   $caseAttributes     The attributes of the checkbox
          * @param  string  $caseValue          The value attribute of the checkbox
-         * @param  string  $surround            The tag that surrounds the checkbox
-         * @param  array   $surroundAttributes  The attributes of the surround
+         * @param  string  $surround           The tag that surrounds the checkbox
+         * @param  array   $surroundAttributes The attributes of the surround
          * @return string
          */
         public function checkbox (string $label, string $caseName, string $caseValue, array $caseAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
-            TextField::setCase($label, $caseName, "checkbox", $caseValue, $caseAttributes, $surround, $surroundAttributes);
+            $checked = (!is_null($this->getValue($caseName))) ? true : false;
+            TextField::setCase($label, $caseName, "checkbox", $caseValue, $checked, $caseAttributes, $surround, $surroundAttributes);
+
             return TextField::getField();
         }
 
@@ -128,7 +174,9 @@
          */
         public function select (?string $label, string $selectName, array $selectAttributes = [], array $options = [], ?int $optionsSelected = null, ?string $surround = null, array $surroundAttributes = []) : string
         {
-            TextField::setSelect($label, $selectName, $selectAttributes, $options, $optionsSelected, $surround, $surroundAttributes);
+            $value = $this->getValue($selectName);
+            TextField::setSelect($label, $selectName, $value, $selectAttributes, $options, $optionsSelected, $surround, $surroundAttributes);
+
             return TextField::getField();
         }
 
@@ -143,7 +191,9 @@
          */
         public function hidden (string $hiddenName, array $hiddenAttributes = []) : string
         {
-            TextField::setHidden($hiddenName, $hiddenAttributes);
+            $value = $this->getValue($hiddenName);
+            TextField::setHidden($hiddenName, $value, $hiddenAttributes);
+
             return TextField::getField();
         }
 
@@ -160,9 +210,9 @@
          * @param  array       $surroundAttributes  The attributes of the surround
          * @return string
          */
-        public function file (?string $label, string $inputName, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        public function file (?string $label, string $inputName, $inputValue, array $inputAttributes = [], ?string $surround = null, array $surroundAttributes = []) : string
         {
-            TextField::setInput($label, $inputName, "file", $inputAttributes, $surround, $surroundAttributes);
+            TextField::setInput($label, $inputName, $inputValue, "file", $inputAttributes, $surround, $surroundAttributes);
             return TextField::getField();
         }
 
@@ -213,5 +263,19 @@
         public function row (string $surround, array $attributes = [], string ...$inputs) : string
         {
             return Surround::row($surround, $attributes, $inputs);
+        }
+
+
+
+        /**
+         * Get the value of a form field
+         *
+         * @param  string $name The name attribute of the form field
+         * @return string|null
+         */
+        private function getValue(string $name) : ?string
+        {
+            $value = isset($this->datas[$name]) ? $this->datas[$name] : null;
+            return $value;
         }
     }

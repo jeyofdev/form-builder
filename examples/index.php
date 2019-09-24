@@ -6,13 +6,15 @@
     // Autoloader
     require dirname(__DIR__) . '/vendor/autoload.php';
 
+    // $_POST["postId"] = 5;
+
 
     // Initialize the form builder
-    $formBuilder = new FormBuilder();
+    $formBuilder = new FormBuilder($_POST);
 
 
     // the form tag
-    $formStart = $formBuilder->formStart("index.php", "GET");
+    $formStart = $formBuilder->formStart("index.php", "POST");
     $formEnd = $formBuilder->formEnd();
 
 
@@ -46,15 +48,14 @@
 
     // radio
     $choiceAttributes = [
-        "class" => "content",
-        "checked" => true
+        "class" => "content"
     ];
-    $radio = $formBuilder->radio("England", "country", "england", $choiceAttributes, "div", ["class" => "choice"]);
+    $radio = $formBuilder->radio("England", "country", "england", true, $choiceAttributes, "div", ["class" => "choice"]);
 
     $choiceAttributes = [
         "class" => "content",
     ];
-    $radio2 = $formBuilder->radio("France", "country", "france", $choiceAttributes, "div");
+    $radio2 = $formBuilder->radio("France", "country", "france", false, $choiceAttributes, "div");
 
 
 
@@ -81,8 +82,7 @@
 
     // hidden
     $hiddenAttributes = [
-        "id" => "postId",
-        "value" => 5
+        "id" => "postId"
     ];
     $hidden = $formBuilder->hidden("postId", $hiddenAttributes);
 
@@ -93,7 +93,7 @@
         "id" => "upload",
         "multiple" => true
     ];
-    $file = $formBuilder->file("Select the file to send", "upload", $fileAttributes);
+    $file = $formBuilder->file("Select the file to send", "upload", null, $fileAttributes);
 
 
 

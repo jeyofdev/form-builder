@@ -8,7 +8,7 @@
     {
         public function getFormBuilder () : FormBuilder
         {
-            return new FormBuilder();
+            return new FormBuilder($_POST);
         }
 
 
@@ -123,7 +123,7 @@
                 "id" => "upload",
                 "multiple" => true
             ];
-            $field = $this->getFormBuilder()->file("Select the file to send", "upload", $fieldAttributes);
+            $field = $this->getFormBuilder()->file("Select the file to send", "upload", null, $fieldAttributes);
 
             $this->assertEquals(
                 '<label for="upload">Select the file to send :</label><input type="file" name="upload" class="upload" id="upload" multiple>',
@@ -182,9 +182,8 @@
         {
             $fieldAttributes = [
                 "class" => "content",
-                "checked" => true
             ];
-            $field = $this->getFormBuilder()->radio("England", "country", "england", $fieldAttributes);
+            $field = $this->getFormBuilder()->radio("England", "country", "england", true, $fieldAttributes);
 
             $this->assertEquals(
                 '<input type="radio" id="england" name="country" value="england" class="content" checked><label for="england">England :</label>',
