@@ -9,5 +9,15 @@
         {
             return "input";
         }
+
+
+        public function configureOptions()
+        {
+            $defaultOptions = [
+                "required" => false
+            ];
+
+            return $defaultOptions;
+        }
     }
 

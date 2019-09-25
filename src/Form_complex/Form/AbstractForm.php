@@ -2,9 +2,11 @@
 
     namespace App\Form\Builder\Form_complex\Form;
 
-
+    use App\Form\Builder\Form_complex\Exception\RuntimeException;
     use App\Form\Builder\Form_complex\FormBuilderInterface;
+    use App\Form\Builder\Form_complex\FormFactory;
     use App\Form\Builder\Form_complex\Helpers\ArrayHelpers;
+    use App\Form\Builder\Form_complex\Type\FormType;
 
 
     abstract class AbstractForm implements FormBuilderInterface
@@ -39,19 +41,52 @@
         /**
          * {@inheritdoc}
          */
-        public function buildForm(array $formAttributes = [], array $attributes = []) : string
+        public function buildForm(FormType $formType, array $fields = [], array $formAttributes = []) : string
         {
+            $defaultAttributes = $formType->configureOptions();
+            $formAttributes = array_merge($defaultAttributes, $formAttributes);
+
             $attr = [];
             foreach ($formAttributes as $k => $v) {
-                $v = ($k === "action") ? "$v.php" : $v;
-                $attr[] = $k . '=' . $v;
+                if (in_array($k, $formType->getAllowedOptions())) {
+                    if (!in_array($k, $formType->getAllowedOptionsBool())) {
+                        if (!is_null($v) && $v !== "#") {
+                            if ($k === "action") {
+                                $v = "$v.php";
+                            }
+                            $attr[] = $k . '=' . $v;
+                        } else if ($v === "#") {
+                            $attr[] = $k . '=' . $v;
+                        }
+                    } else {
+                        if ($v === true) {
+                            $attr[] = $k;
+                        }
+                    }
+                } else {
+                    throw new RuntimeException("The attribute '$k' is not allowed");
+                }
             }
 
-            $attr = implode(" ", $attr);
+            $attr = ' ' . implode(" ", $attr);
 
-            $form = "<form $attr>";
+            $form = $this->addForm(FormFactory::createFormType(), $attr);
+
+            return $form;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function addForm (FormType $formType, string $attributes) : string
+        {
+            $tag = $formType->setTag();
+
+            $form = '<' . $tag . $attributes . '>';
             $form .= implode(" ", $this->fields);
-            $form .= "</form>";
+            $form .= '</' . $tag . '>';
 
             return $form;
         }
@@ -65,11 +100,14 @@
         {
             $class = new $type();
 
+            $attrDefaults = $class->configureOptions();
+            $attributes = array_merge($attrDefaults, $attributes);
+
             $labelValue = ArrayHelpers::checkKeyExistsAndGetValue("label", $attributes);
             $label = $class->setLabel($labelValue, $attributesLabel);
 
             $tag = $class->setTag();
-            $type = $class->setType($type);
+            $type = $class->setType($type)->getType();
             $attr = $class->setAttributes($attributes);
             $options = $class->setTagOptions($selectOptions);
 

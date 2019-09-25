@@ -3,6 +3,9 @@
     namespace App\Form\Builder\Form_complex;
 
 
+    use App\Form\Builder\Form_complex\Type\FormType;
+
+
     interface FormBuilderInterface
     {
         /**
@@ -15,11 +18,20 @@
 
 
         /**
-         * Build the form tags
+         * Build the form
          *
          * @return string
          */
-        public function buildForm(array $formAttributes = [], array $attributes = []);
+        public function buildForm(FormType $formType, array $fields = [], array $formAttributes = []);
+
+
+
+        /**
+         * Add a form tag
+         *
+         * @return void
+         */
+        public function addForm (FormType $formType, string $attributes);
 
 
 

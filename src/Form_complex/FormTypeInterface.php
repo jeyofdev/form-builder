@@ -51,9 +51,18 @@
 
 
         /**
-         * Set the type attribute of the form field to add
+         * get the type attribute of the form field to add
          *
          * @return string|null
+         */
+        public function getType ();
+
+
+
+        /**
+         * Set the type attribute of the form field to add
+         *
+         * @return self
          */
         public function setType (string $type);
     }

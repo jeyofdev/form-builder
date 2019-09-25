@@ -2,12 +2,12 @@
 
     namespace App\Form\Builder\Form_complex\Type;
 
-
+    use App\Form\Builder\Form_complex\FormOptionInterface;
     use App\Form\Builder\Form_complex\FormTypeInterface;
     use App\Form\Builder\Form_complex\Helpers\ArrayHelpers;
 
 
-    abstract class AbstractType implements FormTypeInterface
+    abstract class AbstractType implements FormTypeInterface, FormOptionInterface
     {
         /**
          * The Field Attributes allowed with Boolean Values
@@ -15,6 +15,42 @@
         const ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED = [
             "autofocus", "disabled", "readonly", "required", "checked", "multiple"
         ];
+
+
+
+        /**
+         * The type attribute for form fields
+         *
+         * @var string
+         */
+        private $type;
+
+
+
+        /**
+         * The default attributes for form fields
+         *
+         * @var array
+         */
+        protected $defaultOptions;
+
+
+
+        /**
+         * The allowed attributes for each form field
+         *
+         * @var array
+         */
+        protected $allowedOptions;
+
+
+
+        /**
+         * The attributes with a Boolean value allowed for each form field
+         *
+         * @var array
+         */
+        protected $allowedOptionsBool;
 
 
 
@@ -111,12 +147,101 @@
         /**
          * {@inheritdoc}
          */
-        public function setType (string $type) : ?string
+        public function getType () : string
+        {
+            return $this->type;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setType (string $type) : self
         {
             if (!is_null($this->setAttributeType($type))) {
-                return 'type="' . $this->setAttributeType($type) . '"';
+                $this->type = 'type="' . $this->setAttributeType($type) . '"';
             }
-            return null;
+
+            return $this;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function configureOptions()
+        {
+            
+        }
+
+
+
+        /**
+         * Set the defaults attributes for each element of the form
+         * 
+         * @return array
+         */
+        public function getDefaults () : array
+        {
+            return $this->defaultOptions;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setDefaults (array $options = []) : self
+        {
+            $this->defaultOptions = $options;
+            return $this;
+        }
+
+
+
+        /**
+         * Set the allowed attributes for a form element
+         * 
+         * @return array
+         */
+        public function getAllowedOptions () : array
+        {
+            return $this->allowedOptions;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setAllowedOptions (...$options) : self
+        {
+            $this->allowedOptions = $options;
+            return $this;
+        }
+
+
+
+        /**
+         * Set the allowed attributes for a form element that has a boolean value
+         * 
+         * @return array
+         */
+        public function getAllowedOptionsBool () : array
+        {
+            return $this->allowedOptionsBool;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setAllowedOptionsBool (...$options) : self
+        {
+            $this->allowedOptionsBool = $options;
+            return $this;
         }
     }
-
