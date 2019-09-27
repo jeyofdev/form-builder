@@ -3,11 +3,26 @@
     namespace App\Form\Builder\Form_complex\Type;
 
 
-    class PasswordType extends AbstractType
+    class PasswordType extends InputType
     {
-        public function setTag()
+        /**
+         * {@inheritdoc}
+         */
+        public function configureOptions () : array
         {
-            return "input";
+            parent::configureOptions();
+
+            $this->addOptions("maxlength", "minlength", "pattern", "placeholder", "required", "size");
+            $this->addOptionsBool("required");
+
+            $this->defaultOptions = $this
+                ->setDefaults([
+                    "required" => false,
+                    "readonly" => true
+                ])
+                ->getDefaults();
+
+            return $this->defaultOptions;
         }
     }
 

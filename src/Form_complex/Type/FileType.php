@@ -3,11 +3,25 @@
     namespace App\Form\Builder\Form_complex\Type;
 
 
-    class FileType extends AbstractType
+    class FileType extends InputType
     {
-        public function setTag()
+        /**
+         * {@inheritdoc}
+         */
+        public function configureOptions () : array
         {
-            return "input";
+            parent::configureOptions();
+
+            $this->addOptions("accept", "capture", "files", "multiple", "required");
+            $this->addOptionsBool("multiple", "required");
+
+            $this->defaultOptions = $this
+                ->setDefaults([
+                    "required" => false,
+                    "multiple" => false
+                ])
+                ->getDefaults();
+
+            return $this->defaultOptions;
         }
     }
-

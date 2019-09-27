@@ -10,15 +10,6 @@
     abstract class AbstractType implements FormTypeInterface, FormOptionInterface
     {
         /**
-         * The Field Attributes allowed with Boolean Values
-         */
-        const ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED = [
-            "autofocus", "disabled", "readonly", "required", "checked", "multiple"
-        ];
-
-
-
-        /**
          * The type attribute for form fields
          *
          * @var string
@@ -81,7 +72,7 @@
                 $attr = [];
                 foreach ($attributes as $k => $v) {
                     if ($k != "label") {
-                        if (in_array($k, self::ATTRIBUTES_FIELD_WITH_BOOLEAN_VALUES_ALLOWED)) {
+                        if (in_array($k, $this->getAllowedOptionsBool())) {
                             if ($v === true) {
                                 $attr[] = $k;
                             }
@@ -147,7 +138,7 @@
         /**
          * {@inheritdoc}
          */
-        public function getType () : string
+        public function getType () : ?string
         {
             return $this->type;
         }
@@ -171,9 +162,9 @@
         /**
          * {@inheritdoc}
          */
-        public function configureOptions()
+        public function configureOptions() : array
         {
-            
+            return [];
         }
 
 
@@ -204,9 +195,9 @@
         /**
          * Set the allowed attributes for a form element
          * 
-         * @return array
+         * @return array|null
          */
-        public function getAllowedOptions () : array
+        public function getAllowedOptions () : ?array
         {
             return $this->allowedOptions;
         }
@@ -229,7 +220,7 @@
          * 
          * @return array
          */
-        public function getAllowedOptionsBool () : array
+        public function getAllowedOptionsBool () : ?array
         {
             return $this->allowedOptionsBool;
         }

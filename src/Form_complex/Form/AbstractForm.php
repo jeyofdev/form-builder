@@ -6,6 +6,7 @@
     use App\Form\Builder\Form_complex\FormBuilderInterface;
     use App\Form\Builder\Form_complex\FormFactory;
     use App\Form\Builder\Form_complex\Helpers\ArrayHelpers;
+    use App\Form\Builder\Form_complex\Helpers\FormHelpers;
     use App\Form\Builder\Form_complex\Type\FormType;
 
 
@@ -101,6 +102,10 @@
             $class = new $type();
 
             $attrDefaults = $class->configureOptions();
+
+            FormHelpers::checkOptionIsAllowed($attributes, $class);
+            FormHelpers::checkOptionIsAllowed($attrDefaults, $class);
+
             $attributes = array_merge($attrDefaults, $attributes);
 
             $labelValue = ArrayHelpers::checkKeyExistsAndGetValue("label", $attributes);

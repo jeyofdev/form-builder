@@ -3,11 +3,7 @@
     namespace App\Form\Builder\Form_complex\Type;
 
 
-    class RadioType extends AbstractType
+    class RadioType extends CheckboxType
     {
-        public function setTag()
-        {
-            return "input";
-        }
+        
     }
-

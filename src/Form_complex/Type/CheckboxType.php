@@ -3,11 +3,25 @@
     namespace App\Form\Builder\Form_complex\Type;
 
 
-    class CheckboxType extends AbstractType
+    class CheckboxType extends InputType
     {
-        public function setTag()
+        /**
+         * {@inheritdoc}
+         */
+        public function configureOptions () : array
         {
-            return "input";
+            parent::configureOptions();
+
+            $this->addOptions("checked");
+            $this->addOptionsBool("checked");
+
+            $this->defaultOptions = $this
+                ->setDefaults([
+                    "checked" => false,
+                    "readonly" => true
+                ])
+                ->getDefaults();
+
+            return $this->defaultOptions;
         }
     }
-

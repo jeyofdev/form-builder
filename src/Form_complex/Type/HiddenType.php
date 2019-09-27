@@ -3,11 +3,14 @@
     namespace App\Form\Builder\Form_complex\Type;
 
 
-    class HiddenType extends AbstractType
+    class HiddenType extends InputType
     {
-        public function setTag()
+        /**
+         * {@inheritdoc}
+         */
+        public function configureOptions () : array
         {
-            return "input";
+            parent::configureOptions();
+            return $this->defaultOptions;
         }
     }
-

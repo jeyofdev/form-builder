@@ -28,7 +28,7 @@
          *
          * @return self
          */
-        public function setAllowedOptions (string ...$options);
+        public function setAllowedOptions (...$options);
 
 
 
@@ -37,7 +37,7 @@
          *
          * @return self
          */
-        public function setAllowedOptionsBool (string ...$options);
+        public function setAllowedOptionsBool (...$options);
 
 
         // public function setMethodName (string $name);

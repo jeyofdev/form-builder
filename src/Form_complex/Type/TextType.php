@@ -3,21 +3,28 @@
     namespace App\Form\Builder\Form_complex\Type;
 
 
-    class TextType extends AbstractType
+    class TextType extends InputType
     {
-        public function setTag()
+        /**
+         * {@inheritdoc}
+         */
+        public function configureOptions () : array
         {
-            return "input";
-        }
+            parent::configureOptions();
 
+            $this->addOptions(
+                "maxlength", "minlength", "pattern", "placeholder", "required", 
+                "readonly", "size", "spellcheck"
+            );
+            $this->addOptionsBool("required", "spellcheck");
 
-        public function configureOptions()
-        {
-            $defaultOptions = [
-                "required" => false
-            ];
+            $this->defaultOptions = $this
+                ->setDefaults([
+                    "required" => false,
+                    "readonly" => true
+                ])
+                ->getDefaults();
 
-            return $defaultOptions;
+            return $this->defaultOptions;
         }
     }
-
