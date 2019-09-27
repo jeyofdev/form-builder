@@ -35,60 +35,89 @@
         {
             $this
                 ->add("postId", HiddenType::class, ["id" => 5])
-                ->add(
-                    "firstname", TextType::class, [
-                        // "label" => "Firstname",
-                        "class" => "firstname", 
-                        "id" => "firstname",
-                        "placeholder" => "enter your firstname",
-                        "required" => true
-                    ], ["for" => "firstname"], "div", ["class" => "form-control"])
-                ->add(
-                    "password", PasswordType::class, [
-                        // "label" => "Password",
-                        "class" => "password", 
-                        "id" => "password",
-                        "required" => true
-                    ], ["for" => "password"], "div", ["class" => "form-control"])
+                ->add("firstname", TextType::class, [
+                    "label" => "Firstname",
+                    "label_attr" => [
+                        "for" => "firstname",
+                        "class" => "label_firstname"
+                    ],
+                    "class" => "firstname",
+                    "id" => "firstname",
+                    "placeholder" => "enter your firstname",
+                    "required" => true
+                ], "div", ["class" => "form-control"])
+                ->add("password", PasswordType::class, [
+                    "label" => "Password",
+                    "label_attr" => [
+                        "for" => "password",
+                        "class" => "label_password"
+                    ],
+                    "class" => "password", 
+                    "id" => "password",
+                    "required" => true
+                ], "div", ["class" => "form-control"])
                 ->add("content", TextareaType::class, [
-                    // "label" => "Content",
+                    "label" => "Content",
+                    "label_attr" => [
+                        "for" => "content",
+                        "class" => "label_content"
+                    ],
                     "class" => "content",
                     "id" => "content",
                     "rows" => 8,
                     "required" => true,
                     "placeholder" => "Enter your message"
-                ], [], "div", ["class" => "form-control"])
+                ], "div", ["class" => "form-control"])
                 ->add("country", RadioType::class, [
-                    // "label" => "France",
+                    "label" => "France",
+                    "label_attr" => [
+                        "for" => "france"
+                    ],
                     "id" => "france",
                     "checked" => true
-                ], ["for" => "france"], "div", ["class" => "choice"])
+                ], "div", ["class" => "choice"])
                 ->add("country", RadioType::class, [
-                    // "label" => "England",
+                    "label" => "England",
+                    "label_attr" => [
+                        "for" => "england"
+                    ],
                     "id" => "england",
-                ], ["for" => "england"], "div", ["class" => "choice"])
+                ], "div", ["class" => "choice"])
                 ->add("europe", CheckboxType::class, [
-                    // "label" => "Europe",
+                    "label" => "Europe",
+                    "label_attr" => [
+                        "for" => "europe"
+                    ],
                     "id" => "europe"
-                ], ["for" => "europe"], "div", ["class" => "form-control"])
+                ], "div", ["class" => "form-control"])
                 ->add("america", CheckboxType::class, [
-                    // "label" => "America",
+                    "label" => "America",
+                    "label_attr" => [
+                        "for" => "america"
+                    ],
                     "id" => "america"
-                ], ["for" => "america"], "div", ["class" => "form-control"])
+                ], "div", ["class" => "form-control"])
                 ->add("language", SelectType::class, [
-                    // "label" => "Languages",
+                    "label" => "Languages",
+                    "label_attr" => [
+                        "for" => "languages",
+                        "class" => "label_languages"
+                    ],
                     "class" => "language",
-                    "id" => "language",
-                    "multiple" => true
-                ], ["for" => "language"], "div", ["class" => "form-control"], [
+                    "id" => "language"
+                ], "div", ["class" => "form-control"], [
                     "php", "javascript", "java"
                 ])
                 ->add("upload", FileType::class, [
-                    // "label" => "Select the file to send",
+                    "label" => "Select the file to send",
+                    "label_attr" => [
+                        "for" => "upload",
+                        "class" => "label_upload"
+                    ],
                     "class" => "upload",
                     "id" => "upload",
                     "multiple" => true
-                ], ["for" => "upload"], "div", ["class" => "form-control"]);
+                ], "div", ["class" => "form-control"]);
                 ;
                 
 

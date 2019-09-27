@@ -10,6 +10,13 @@
     abstract class AbstractType implements FormTypeInterface, FormOptionInterface
     {
         /**
+         * The allowed attributes for the html tag 'label'
+         */
+        const LABEL_ATTRIBUTES_ALLOWED = ["id", "class", "for", "form"];
+
+
+
+        /**
          * The type attribute for form fields
          *
          * @var string
@@ -71,7 +78,7 @@
             if (!empty($attributes)) {
                 $attr = [];
                 foreach ($attributes as $k => $v) {
-                    if ($k != "label") {
+                    if ($k != "label" && $k != "label_attr") {
                         if (in_array($k, $this->getAllowedOptionsBool())) {
                             if ($v === true) {
                                 $attr[] = $k;
@@ -105,7 +112,7 @@
          */
         public function setLabel (?string $label = null, array $attributes = []) : ?string
         {
-            $attr = ArrayHelpers::listAttributes($attributes);
+            $attr = ArrayHelpers::listAttributes($attributes, self::LABEL_ATTRIBUTES_ALLOWED);
 
             if (!is_null($label)) {
                 $label = '<label ' . $attr . '>' . $label . ' :</label>';

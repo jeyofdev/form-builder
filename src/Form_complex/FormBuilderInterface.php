@@ -40,7 +40,7 @@
          * 
          * @return self
          */
-        public function add (string $name, string $type, array $attributes = [], array $attributesLabel = [], ?string $surround = null, array $surroundAttributes = [], $selectOptions = []);
+        public function add (string $name, string $type, array $attributes = [], ?string $surround = null, array $surroundAttributes = [], $selectOptions = []);
 
 
 

@@ -97,7 +97,7 @@
         /**
          * {@inheritdoc}
          */
-        public function add (string $name, string $type, array $attributes = [], array $attributesLabel = [], ?string $surround = null, array $surroundAttributes = [], $selectOptions = []) : self
+        public function add (string $name, string $type, array $attributes = [], ?string $surround = null, array $surroundAttributes = [], $selectOptions = []) : self
         {
             $class = new $type();
 
@@ -108,8 +108,20 @@
 
             $attributes = array_merge($attrDefaults, $attributes);
 
-            $labelValue = ArrayHelpers::checkKeyExistsAndGetValue("label", $attributes);
-            $label = $class->setLabel($labelValue, $attributesLabel);
+            $label = '';
+            if (array_key_exists("label", $attributes)) {
+                $labelValue = $attributes["label"];
+
+                if (array_key_exists("label_attr", $attributes)) {
+                    if (!empty($attributes["label_attr"])) {
+                        $label = $class->setLabel($labelValue, $attributes["label_attr"]);
+                    } else {
+                        throw new RuntimeException("The label_attr array is empty");
+                    }
+                } else {
+                    throw new RuntimeException("The label_attr is not defined");
+                }
+            }
 
             $tag = $class->setTag();
             $type = $class->setType($type)->getType();

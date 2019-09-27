@@ -3,6 +3,9 @@
     namespace App\Form\Builder\Form_complex\Helpers;
 
 
+    use App\Form\Builder\Form_complex\Exception\RuntimeException;
+
+
     class ArrayHelpers
     {
         /**
@@ -12,12 +15,20 @@
          * @param array $attributes
          * @return string
          */
-        public static function listAttributes (array $attributes) : string
+        public static function listAttributes (array $attributes, array $compare = []) : string
         {
             $attr = [];
 
             foreach ($attributes as $k => $v) {
-                $attr[] = $k . '="' . $v . '"';
+                if (!empty($compare)) {
+                    if (in_array($k, $compare)) {
+                        $attr[] = $k . '="' . $v . '"';
+                    } else {
+                        throw new RuntimeException("The attribute '$k' is not allowed for Html label element");
+                    }
+                } else {
+                    $attr[] = $k . '="' . $v . '"';
+                }
             }
 
             return implode(" ", $attr);

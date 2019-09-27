@@ -23,7 +23,7 @@
             $this->allowedOptions = $this
                 ->setAllowedOptions(
                     "class", "id", "autocomplete", "autofocus", "disable", "form", 
-                    "list", "name", "readonly", "tabindex", "value"
+                    "label", "label_attr", "list", "name", "readonly", "tabindex", "value"
                 )
                 ->getAllowedOptions();
 
