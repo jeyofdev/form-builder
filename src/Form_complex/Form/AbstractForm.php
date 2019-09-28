@@ -2,12 +2,15 @@
 
     namespace App\Form\Builder\Form_complex\Form;
 
+
     use App\Form\Builder\Form_complex\Exception\RuntimeException;
     use App\Form\Builder\Form_complex\FormBuilderInterface;
     use App\Form\Builder\Form_complex\FormFactory;
     use App\Form\Builder\Form_complex\Helpers\ArrayHelpers;
     use App\Form\Builder\Form_complex\Helpers\FormHelpers;
     use App\Form\Builder\Form_complex\Type\FormType;
+    use App\Form\Builder\Form_complex\Type\SubmitType;
+    use App\Form\Builder\Form_complex\Type\ResetType;
 
 
     abstract class AbstractForm implements FormBuilderInterface
@@ -29,6 +32,9 @@
         protected $fields = [];
 
 
+        protected $buttons = [];
+
+
 
         /**
          * {@inheritdoc}
@@ -42,7 +48,7 @@
         /**
          * {@inheritdoc}
          */
-        public function buildForm(FormType $formType, array $fields = [], array $formAttributes = []) : string
+        public function buildForm(FormType $formType, array $formAttributes = []) : string
         {
             $defaultAttributes = $formType->configureOptions();
             $formAttributes = array_merge($defaultAttributes, $formAttributes);
@@ -87,6 +93,7 @@
 
             $form = '<' . $tag . $attributes . '>';
             $form .= implode(" ", $this->fields);
+            $form .= implode(" ", $this->buttons);
             $form .= '</' . $tag . '>';
 
             return $form;
@@ -101,12 +108,7 @@
         {
             $class = new $type();
 
-            $attrDefaults = $class->configureOptions();
-
-            FormHelpers::checkOptionIsAllowed($attributes, $class);
-            FormHelpers::checkOptionIsAllowed($attrDefaults, $class);
-
-            $attributes = array_merge($attrDefaults, $attributes);
+            $attributes = $this->mergeDefaultsAttributesWithFieldAttributes($class, $attributes);
 
             $label = '';
             if (array_key_exists("label", $attributes)) {
@@ -140,7 +142,58 @@
         /**
          * {@inheritdoc}
          */
-        public function generateFormElement (?string $label, string $tag, ?string $type, string $name, ?string $attributes, $selectOptions) : string
+        public function submit (string $label, array $attributes = [], ?string $surround = null, array $surroundAttributes = []) : self
+        {
+            $submit = new SubmitType();
+            $this->buttons["submit"] = $this->addButton($submit, $label, $attributes, $surround, $surroundAttributes);
+
+            return $this;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function reset (string $label, array $attributes = [], ?string $surround = null, array $surroundAttributes = []) : self
+        {
+            $reset = new ResetType();
+            $this->buttons["reset"] = $this->addButton($reset, $label, $attributes, $surround, $surroundAttributes);
+
+            return $this;
+        }
+
+
+
+        /**
+         * add a button to the form
+         *
+         * @param SubmitType|ResetType $class
+         * @return string
+         */
+        private function addButton ($classType, string $label, array $attributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            $attributes = $this->mergeDefaultsAttributesWithFieldAttributes($classType, $attributes);
+
+            $attr = $classType->setAttributes($attributes);
+            $tag = $classType->setTag();
+            $type = $classType->setType(get_class($classType))->getType();
+
+            $button = $this->generateFormButton($label, $tag, $type, $attr,);
+
+            $surroundButton = $this->surround($button, $surround, $surroundAttributes);
+
+            return $surroundButton;
+        }
+
+
+
+        /**
+         * Generate the form field tags
+         *
+         * @return string
+         */
+        private function generateFormElement (?string $label, string $tag, ?string $type, string $name, ?string $attributes, $selectOptions) : string
         {
             $typeValue = substr($type, 6, -1);
             $fields = ($typeValue !== "radio" && $typeValue !== "checkbox") ? $label : null;
@@ -165,9 +218,27 @@
 
 
         /**
-         * {@inheritdoc}
+         * generate a form button
+         *
+         * @return string
          */
-        public function surround (string $field, ?string $surround = null, array $attributes = []) : string
+        private function generateFormButton (?string $label, string $tag, ?string $type, ?string $attributes) : string
+        {
+            if ($tag === "button") {
+                $button = '<' . $tag . ' ' . $type . ' ' . $attributes . '>' . $label . '</button>';
+            }
+
+            return $button;
+        }
+
+
+
+        /**
+         * Surround a form field with HTML tags
+         *
+         * @return string
+         */
+        private function surround (string $field, ?string $surround = null, array $attributes = []) : string
         {
             $attr = null;
 
@@ -184,5 +255,22 @@
             }
 
             return $surroundField;
+        }
+
+
+
+        /**
+         * Merge the default attributes with the attributes of the form field
+         *
+         * @return array
+         */
+        private function mergeDefaultsAttributesWithFieldAttributes ($classType, array $attributes = []) : array
+        {
+            $attrDefaults = $classType->configureOptions();
+
+            FormHelpers::checkOptionIsAllowed($attributes, $classType);
+            FormHelpers::checkOptionIsAllowed($attrDefaults, $classType);
+
+            return array_merge($attrDefaults, $attributes);
         }
     }

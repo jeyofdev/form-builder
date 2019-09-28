@@ -22,7 +22,7 @@
          *
          * @return string
          */
-        public function buildForm(FormType $formType, array $fields = [], array $formAttributes = []);
+        public function buildForm(FormType $formType, array $formAttributes = []);
 
 
 
@@ -45,18 +45,18 @@
 
 
         /**
-         * Generate the form field tags
+         * Add a submit button to the form
          *
-         * @return string
+         * @return self
          */
-        public function generateFormElement (?string $label, string $tag, ?string $type, string $name, ?string $attributes, $selectOptions);
+        public function submit (string $label, array $attributes = [], ?string $surround = null, array $surroundAttributes = []);
 
 
 
         /**
-         * Surround a form field with HTML tags
+         * Add a reset button to the form
          *
-         * @return string
+         * @return self
          */
-        public function surround (string $field, ?string $surround = null, array $attributes = []);
+        public function reset (string $label, array $attributes = [], ?string $surround = null, array $surroundAttributes = []);
     }

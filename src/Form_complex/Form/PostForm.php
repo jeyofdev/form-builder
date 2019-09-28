@@ -117,11 +117,19 @@
                     "class" => "upload",
                     "id" => "upload",
                     "multiple" => true
-                ], "div", ["class" => "form-control"]);
+                ], "div", ["class" => "form-control"])
+                ->submit("Submit the form", [
+                    "class" => "btn btn-primary",
+                    "id" => "submit-button"
+                ], "div", ["class" => "form-control"])
+                ->reset("empty the form", [
+                    "class" => "btn btn-danger",
+                    "id" => "reset-button",
+                    "disabled" => true
+                ], "div", ["class" => "form-control"])
                 ;
-                
 
-            $this->form = $this->buildForm($this->formOption, $this->fields, [
+            $this->form = $this->buildForm($this->formOption, [
                 "action" => "index", 
                 "method" => "post",
                 "id" => "form-post",

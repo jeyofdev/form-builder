@@ -19,7 +19,7 @@
         {
             foreach ($options as $k => $v) {
                 if (!in_array($k, $class->getAllowedOptions())) {
-                    throw new RuntimeException("The attribute '$k' is not allowed for this field");
+                    throw new RuntimeException("The attribute '$k' is not allowed");
                 }
             }
         }
