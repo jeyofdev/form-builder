@@ -6,6 +6,24 @@
     interface FormFieldOptionInterface
     {
         /**
+         * Set the action attribute on the form tag
+         *
+         * @return string|null
+         */
+        public function setAction (string $key, string $value);
+
+
+
+        /**
+         * Set a booleen attribute
+         *
+         * @return string|null
+         */
+        public function setAttrBool (string $key, array $attributes = []);
+
+
+
+        /**
          * Set the checked attribute on a checkbox or radio button
          *
          * @return string|null

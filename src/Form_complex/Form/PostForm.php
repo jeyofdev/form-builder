@@ -36,7 +36,7 @@
             parent::generateForm($datas);
 
             $this
-                ->add("postId", HiddenType::class, ["value" => $this->getValue($datas, "postId")])
+                // ->add("postId", HiddenType::class, ["value" => $this->getValue($datas, "postId")])
                 ->add("firstname", TextType::class, [
                     "label" => "Firstname",
                     "label_attr" => [
@@ -46,7 +46,7 @@
                     "class" => "firstname",
                     "id" => "firstname",
                     "placeholder" => "enter your firstname",
-                    "required" => true,
+                    "spellcheck" => true,
                     "value" => $this->getValue($datas, "firstname")
                 ], "div", ["class" => "form-control"])
                 ->add("password", PasswordType::class, [
@@ -57,7 +57,7 @@
                     ],
                     "class" => "password", 
                     "id" => "password",
-                    "required" => true
+                    "required" => true,
                 ], "div", ["class" => "form-control"])
                 ->add("content", TextareaType::class, [
                     "label" => "Content",
@@ -69,6 +69,7 @@
                     "id" => "content",
                     "rows" => 8,
                     "required" => true,
+                    "autofocus" => true,
                     "value" => $this->getValue($datas, "content"),
                     "placeholder" => "Enter your message"
                 ], "div", ["class" => "form-control"])
@@ -116,16 +117,16 @@
                 ], "div", ["class" => "form-control"], [
                     "php", "javascript", "java"
                 ])
-                // ->add("upload", FileType::class, [
-                //     "label" => "Select the file to send",
-                //     "label_attr" => [
-                //         "for" => "upload",
-                //         "class" => "label_upload"
-                //     ],
-                //     "class" => "upload",
-                //     "id" => "upload",
-                //     "multiple" => true
-                // ], "div", ["class" => "form-control"])
+                ->add("upload", FileType::class, [
+                    "label" => "Select the file to send",
+                    "label_attr" => [
+                        "for" => "upload",
+                        "class" => "label_upload"
+                    ],
+                    "class" => "upload",
+                    "id" => "upload",
+                    "multiple" => true
+                ], "div", ["class" => "form-control"])
                 ->submit("Submit the form", [
                     "class" => "btn btn-primary",
                     "id" => "submit-button"
@@ -141,7 +142,8 @@
                 "action" => "#", 
                 "method" => "post",
                 "id" => "form-post",
-                "class" => "form"
+                "class" => "form",
+                "novalidate" => true
             ]);
 
             return $this->form;

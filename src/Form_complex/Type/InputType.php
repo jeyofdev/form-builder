@@ -22,13 +22,13 @@
         {
             $this->allowedOptions = $this
                 ->setAllowedOptions(
-                    "class", "id", "autocomplete", "autofocus", "disable", "form", 
+                    "class", "id", "autocomplete", "autofocus", "disabled", "form", 
                     "label", "label_attr", "list", "name", "readonly", "tabindex", "value"
                 )
                 ->getAllowedOptions();
 
             $this->allowedOptionsBool = $this
-                ->setAllowedOptionsBool("autofocus", "disable", "readonly")
+                ->setAllowedOptionsBool("autofocus", "disabled", "readonly")
                 ->getAllowedOptionsBool();
 
             $this->defaultOptions = $this

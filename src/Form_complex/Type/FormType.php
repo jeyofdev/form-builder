@@ -31,8 +31,7 @@
             $this->defaultOptions = $this
                 ->setDefaults([
                     "action" => null,
-                    "method" => "post",
-                    "novalidate" => true
+                    "method" => "post"
                 ])
                 ->getDefaults();
 

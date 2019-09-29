@@ -66,35 +66,15 @@
          */
         public function buildForm(FormType $formType, array $formAttributes = []) : string
         {
-            $defaultAttributes = $formType->configureOptions();
-            $formAttributes = array_merge($defaultAttributes, $formAttributes);
+            $mergeAttributes = $this->mergeDefaultsAttributesWithFieldAttributes($formType, $formAttributes);
 
-            $attr = [];
-            foreach ($formAttributes as $k => $v) {
-                if (in_array($k, $formType->getAllowedOptions())) {
-                    if (!in_array($k, $formType->getAllowedOptionsBool())) {
-                        if (!is_null($v) && $v !== "#") {
-                            if ($k === "action") {
-                                $v = "$v.php";
-                            }
-                            $attr[] = $k . '=' . $v;
-                        } else if ($v === "#") {
-                            $attr[] = $k . '=' . $v;
-                        }
-                    } else {
-                        if ($v === true) {
-                            $attr[] = $k;
-                        }
-                    }
-                } else {
-                    throw new RuntimeException("The attribute '$k' is not allowed");
-                }
-            }
+            $novalidate = $this->setAttrBool("novalidate", $mergeAttributes);
+            $mergeAttributes = $this->unsetAttr($formType->getAllowedOptionsBool(), $mergeAttributes);
 
-            $attr = ' ' . implode(" ", $attr);
-            $form = $this->addForm(FormFactory::createFormType(), $attr);
+            $attr = $this->setFormAttributes($formType, $mergeAttributes);
+            $attr .= $novalidate;
 
-            return $form;
+            return $this->addForm(FormFactory::createFormType(), $attr);
         }
 
 
@@ -160,7 +140,17 @@
                 $value = isset($attributes["value"]) ? $attributes["value"] : null;
             }
 
+            $autofocus = $this->setAttrBool("autofocus", $mergeAttributes);
+            $disabled = $this->setAttrBool("disabled", $mergeAttributes);
+            $required = $this->setAttrBool("required", $mergeAttributes);
+            $spellcheck = $this->setAttrBool("spellcheck", $mergeAttributes);
+            $readonly = $this->setAttrBool("readonly", $mergeAttributes);
+            $multiple = $this->setAttrBool("multiple", $mergeAttributes);
+
+            $mergeAttributes = $this->unsetAttr($class->getAllowedOptionsBool(), $mergeAttributes);
+
             $attr = $class->setAttributes($mergeAttributes);
+            $attr .= $autofocus . $disabled . $multiple . $readonly . $required . $spellcheck;
 
             $fields = $this->generateFormElement($label, $tag, $type, $name, $attr, $checked, $value, $options);
             $surroundField = $this->surround($fields, $surround, $surroundAttributes);
@@ -198,24 +188,48 @@
 
 
         /**
-         * add a button to the form
+         * Set the attributes of the form tag
          *
-         * @param SubmitType|ResetType $class
-         * @return string
+         * @param FormType $formType
+         * @return string|null
          */
-        private function addButton ($classType, string $label, array $attributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        private function setFormAttributes (FormType $formType, array $attributes) : ?string
         {
-            $attributes = $this->mergeDefaultsAttributesWithFieldAttributes($classType, $attributes);
+            $attr = [];
+            foreach ($attributes as $k => $v) {
+                if (in_array($k, $formType->getAllowedOptions())) {
+                    if (!is_null($v) && $v !== "#") {
+                        $this->setAction($k, $v);
+                        $attr[] = $k . '=' . $v;
+                    } else if ($v === "#") {
+                        $attr[] = $k . '=' . $v;
+                    }
+                } else {
+                    throw new RuntimeException("The attribute '$k' is not allowed");
+                }
+            }
 
-            $attr = $classType->setAttributes($attributes);
-            $tag = $classType->setTag();
-            $type = $classType->setType(get_class($classType))->getType();
+            $attr = ' ' . implode(" ", $attr);
 
-            $button = $this->generateFormButton($label, $tag, $type, $attr,);
+            return $attr;
+        }
 
-            $surroundButton = $this->surround($button, $surround, $surroundAttributes);
 
-            return $surroundButton;
+
+        /**
+         * Delete the indexes from the array of attributes whose value is a booleen
+         *
+         * @return array
+         */
+        private function unsetAttr (array $optionsBool, array $attributes) : array
+        {
+            foreach ($optionsBool as $k => $v) {
+                if (array_key_exists($v, $attributes)) {
+                    unset($attributes[$v]);
+                }
+            }
+
+            return $attributes;
         }
 
 
@@ -249,6 +263,29 @@
             }
             
             return $fields;
+        }
+
+
+
+        /**
+         * add a button to the form
+         *
+         * @param SubmitType|ResetType $class
+         * @return string
+         */
+        private function addButton ($classType, string $label, array $attributes = [], ?string $surround = null, array $surroundAttributes = []) : string
+        {
+            $attributes = $this->mergeDefaultsAttributesWithFieldAttributes($classType, $attributes);
+
+            $attr = $classType->setAttributes($attributes);
+            $tag = $classType->setTag();
+            $type = $classType->setType(get_class($classType))->getType();
+
+            $button = $this->generateFormButton($label, $tag, $type, $attr,);
+
+            $surroundButton = $this->surround($button, $surround, $surroundAttributes);
+
+            return $surroundButton;
         }
 
 

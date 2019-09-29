@@ -11,6 +11,36 @@
         /**
          * {@inheritDoc}
          */
+        public function setAction (string $key, string $value) : string
+        {
+            if ($key === "action") {
+                $value = "$value.php";
+            }
+
+            return $value;
+        }
+
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public function setAttrBool (string $key, array $attributes = []) : ?string
+        {
+            if (array_key_exists($key, $attributes)) {
+                if ($attributes[$key]) {
+                    return ' ' . $key;
+                }
+            }
+
+            return null;
+        }
+
+
+
+        /**
+         * {@inheritDoc}
+         */
         public function setChecked (string $fieldsValue, string $key, array $datas = [], array $attributes = [], array $mergeAttributes = []) : ?string
         {
             $checked = null;
