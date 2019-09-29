@@ -46,7 +46,7 @@
          *
          * @return string|null
          */
-        public function setTagOptions (array $selectOptions = []);
+        public function setTagOptions (string $name, array $selectOptions = [], array $datas = []);
 
 
 

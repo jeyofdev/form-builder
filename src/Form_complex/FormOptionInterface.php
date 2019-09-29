@@ -38,10 +38,4 @@
          * @return self
          */
         public function setAllowedOptionsBool (...$options);
-
-
-        // public function setMethodName (string $name);
-
-
-        //les options pour chaques champs de formulaire
     }

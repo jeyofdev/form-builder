@@ -13,7 +13,7 @@
     use App\Form\Builder\Form_complex\Type\ResetType;
 
 
-    abstract class AbstractForm implements FormBuilderInterface
+    abstract class AbstractForm extends AbstractOptions implements FormBuilderInterface
     {
         /**
          * The generated form
@@ -32,15 +32,31 @@
         protected $fields = [];
 
 
+
+        /**
+         * The forms buttons
+         *
+         * @var array
+         */
         protected $buttons = [];
+
+
+
+        /**
+         * The data sent to the form
+         *
+         * @var array
+         */
+        protected $datas = [];
 
 
 
         /**
          * {@inheritdoc}
          */
-        public function generateForm ()
+        public function generateForm (array $datas = [])
         {
+            $this->datas = $datas;
         }
 
 
@@ -76,7 +92,6 @@
             }
 
             $attr = ' ' . implode(" ", $attr);
-
             $form = $this->addForm(FormFactory::createFormType(), $attr);
 
             return $form;
@@ -108,15 +123,18 @@
         {
             $class = new $type();
 
-            $attributes = $this->mergeDefaultsAttributesWithFieldAttributes($class, $attributes);
+            $mergeAttributes = $this->mergeDefaultsAttributesWithFieldAttributes($class, $attributes);
+            if (array_key_exists("checked", $mergeAttributes)) {
+                unset($mergeAttributes["checked"]);
+            }
 
             $label = '';
-            if (array_key_exists("label", $attributes)) {
-                $labelValue = $attributes["label"];
+            if (array_key_exists("label", $mergeAttributes)) {
+                $labelValue = $mergeAttributes["label"];
 
-                if (array_key_exists("label_attr", $attributes)) {
-                    if (!empty($attributes["label_attr"])) {
-                        $label = $class->setLabel($labelValue, $attributes["label_attr"]);
+                if (array_key_exists("label_attr", $mergeAttributes)) {
+                    if (!empty($mergeAttributes["label_attr"])) {
+                        $label = $class->setLabel($labelValue, $mergeAttributes["label_attr"]);
                     } else {
                         throw new RuntimeException("The label_attr array is empty");
                     }
@@ -127,10 +145,24 @@
 
             $tag = $class->setTag();
             $type = $class->setType($type)->getType();
-            $attr = $class->setAttributes($attributes);
-            $options = $class->setTagOptions($selectOptions);
+            $options = $class->setTagOptions($name, $selectOptions, $this->datas);
 
-            $fields = $this->generateFormElement($label, $tag, $type, $name, $attr, $options);
+            $checked = null;
+            $typeValue = substr($type, 6, -1);
+
+            if (in_array($typeValue, ["radio", "checkbox"])) {
+                $checked = $this->setChecked($mergeAttributes["value"], $name, $this->datas, $attributes, $mergeAttributes);
+            }
+
+            $value = null;
+            if (!in_array($type, ["radio", "checkbox", "hidden"])) {
+                unset($mergeAttributes["value"]);
+                $value = isset($attributes["value"]) ? $attributes["value"] : null;
+            }
+
+            $attr = $class->setAttributes($mergeAttributes);
+
+            $fields = $this->generateFormElement($label, $tag, $type, $name, $attr, $checked, $value, $options);
             $surroundField = $this->surround($fields, $surround, $surroundAttributes);
             $this->fields[] = $surroundField;
 
@@ -193,17 +225,21 @@
          *
          * @return string
          */
-        private function generateFormElement (?string $label, string $tag, ?string $type, string $name, ?string $attributes, $selectOptions) : string
+        private function generateFormElement (?string $label, string $tag, ?string $type, string $name, ?string $attributes, $checked, $value, $selectOptions) : string
         {
             $typeValue = substr($type, 6, -1);
             $fields = ($typeValue !== "radio" && $typeValue !== "checkbox") ? $label : null;
 
+            if ($tag !== "textarea") {
+                $value = ($value !== null) ? ' value="' . $value . '"' : null;
+            }
+
             if ($tag === "input") {
-                $fields .= '<' . $tag . ' ' . $type . ' name="' . $name . '"' . $attributes . '>';
+                $fields .= '<' . $tag . ' ' . $type . ' name="' . $name . '"' . $attributes . $checked . $value . '>';
             } else if ($tag === "textarea") {
-                $fields .= '<' . $tag . ' name="' . $name . '"' . $attributes . '></' . $tag . '>';
+                $fields .= '<' . $tag . ' name="' . $name . '"' . $attributes . '>' . $value . '</' . $tag . '>';
             } else if ($tag === "select") {
-                $fields = '<' . $tag . ' name="' . $name . '"' . $attributes . '>';
+                $fields .= '<' . $tag . ' name="' . $name . '"' . $attributes . '>';
                 $fields .= $selectOptions;
                 $fields .= '</' . $tag . '>';
             }

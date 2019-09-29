@@ -2,12 +2,13 @@
 
     namespace App\Form\Builder\Form_complex\Type;
 
-    use App\Form\Builder\Form_complex\FormOptionInterface;
+use App\Form\Builder\Form_complex\Form\AbstractOptions;
+use App\Form\Builder\Form_complex\FormOptionInterface;
     use App\Form\Builder\Form_complex\FormTypeInterface;
     use App\Form\Builder\Form_complex\Helpers\ArrayHelpers;
 
 
-    abstract class AbstractType implements FormTypeInterface, FormOptionInterface
+    abstract class AbstractType extends AbstractOptions implements FormTypeInterface, FormOptionInterface
     {
         /**
          * The allowed attributes for the html tag 'label'
@@ -125,13 +126,14 @@
         /**
          * {@inheritdoc}
          */
-        public function setTagOptions (array $selectOptions = []) : ?string
+        public function setTagOptions (string $name, array $selectOptions = [], array $datas = []) : ?string
         {
             if (!empty($selectOptions)) {
                 $options = [];
 
                 foreach ($selectOptions as $k => $v) {
-                    $options[] = '<option value="' . $k . '">' . $v . '</option>';
+                    $selected = $this->setSelected($k, $name, $datas);
+                    $options[] = '<option value="' . $k . '"' . $selected . '>' . $v . '</option>';
                 }
 
                 return implode(" ", $options);

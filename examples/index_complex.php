@@ -22,7 +22,8 @@ use App\Form\Builder\Form_complex\Type\TextType;
     //     "class" => "form-control",
     // ]);
 
-    $form = (new PostForm())->generateForm();
+    // $_POST["postId"] = 5;
+    $form = (new PostForm())->generateForm($_POST);
 
 ?>
 

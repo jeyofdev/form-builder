@@ -17,8 +17,7 @@
 
             $this->defaultOptions = $this
                 ->setDefaults([
-                    "checked" => false,
-                    "readonly" => true
+                    "checked" => false
                 ])
                 ->getDefaults();
 

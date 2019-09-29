@@ -24,7 +24,7 @@
                 ->setAllowedOptions(
                     "class", "id", "autocomplete", "autofocus", "cols", "disable", "form", 
                     "label", "label_attr", "maxlength", "minlength", "name", "placeholder", "readonly", "required", 
-                    "rows", "spellcheck", "wrap"
+                    "rows", "spellcheck", "value", "wrap"
                 )
                 ->getAllowedOptions();
 

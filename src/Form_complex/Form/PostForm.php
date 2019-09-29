@@ -31,10 +31,12 @@
         /**
          * {@inheritdoc}
          */
-        public function generateForm () : string
+        public function generateForm (array $datas = []) : string
         {
+            parent::generateForm($datas);
+
             $this
-                ->add("postId", HiddenType::class, ["id" => 5])
+                ->add("postId", HiddenType::class, ["value" => $this->getValue($datas, "postId")])
                 ->add("firstname", TextType::class, [
                     "label" => "Firstname",
                     "label_attr" => [
@@ -44,7 +46,8 @@
                     "class" => "firstname",
                     "id" => "firstname",
                     "placeholder" => "enter your firstname",
-                    "required" => true
+                    "required" => true,
+                    "value" => $this->getValue($datas, "firstname")
                 ], "div", ["class" => "form-control"])
                 ->add("password", PasswordType::class, [
                     "label" => "Password",
@@ -66,6 +69,7 @@
                     "id" => "content",
                     "rows" => 8,
                     "required" => true,
+                    "value" => $this->getValue($datas, "content"),
                     "placeholder" => "Enter your message"
                 ], "div", ["class" => "form-control"])
                 ->add("country", RadioType::class, [
@@ -74,7 +78,7 @@
                         "for" => "france"
                     ],
                     "id" => "france",
-                    "checked" => true
+                    "value" => "france"
                 ], "div", ["class" => "choice"])
                 ->add("country", RadioType::class, [
                     "label" => "England",
@@ -82,20 +86,24 @@
                         "for" => "england"
                     ],
                     "id" => "england",
+                    "checked" => true,
+                    "value" => "england"
                 ], "div", ["class" => "choice"])
                 ->add("europe", CheckboxType::class, [
                     "label" => "Europe",
                     "label_attr" => [
                         "for" => "europe"
                     ],
-                    "id" => "europe"
+                    "id" => "europe",
+                    "value" => "europe"
                 ], "div", ["class" => "form-control"])
                 ->add("america", CheckboxType::class, [
                     "label" => "America",
                     "label_attr" => [
                         "for" => "america"
                     ],
-                    "id" => "america"
+                    "id" => "america",
+                    "value" => "america"
                 ], "div", ["class" => "form-control"])
                 ->add("language", SelectType::class, [
                     "label" => "Languages",
@@ -108,16 +116,16 @@
                 ], "div", ["class" => "form-control"], [
                     "php", "javascript", "java"
                 ])
-                ->add("upload", FileType::class, [
-                    "label" => "Select the file to send",
-                    "label_attr" => [
-                        "for" => "upload",
-                        "class" => "label_upload"
-                    ],
-                    "class" => "upload",
-                    "id" => "upload",
-                    "multiple" => true
-                ], "div", ["class" => "form-control"])
+                // ->add("upload", FileType::class, [
+                //     "label" => "Select the file to send",
+                //     "label_attr" => [
+                //         "for" => "upload",
+                //         "class" => "label_upload"
+                //     ],
+                //     "class" => "upload",
+                //     "id" => "upload",
+                //     "multiple" => true
+                // ], "div", ["class" => "form-control"])
                 ->submit("Submit the form", [
                     "class" => "btn btn-primary",
                     "id" => "submit-button"
@@ -130,7 +138,7 @@
                 ;
 
             $this->form = $this->buildForm($this->formOption, [
-                "action" => "index", 
+                "action" => "#", 
                 "method" => "post",
                 "id" => "form-post",
                 "class" => "form"

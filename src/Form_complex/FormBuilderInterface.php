@@ -13,7 +13,7 @@
          *
          * @return string
          */
-        public function generateForm ();
+        public function generateForm (array $datas = []);
 
 
 
