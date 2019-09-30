@@ -41,7 +41,7 @@
                     "class" => "firstname",
                     "id" => "firstname",
                     "placeholder" => "enter your firstname",
-                    "spellcheck" => true,
+                    "required" => true,
                     "value" => $this->getValue($datas, "firstname")
                 ], "div", ["class" => "form-control"])
                 ->add("password", PasswordType::class, [
@@ -135,8 +135,7 @@
                 "action" => "#", 
                 "method" => "post",
                 "id" => "form-post",
-                "class" => "form",
-                "novalidate" => true
+                "class" => "form"
             ]);
 
             $this->setView();
