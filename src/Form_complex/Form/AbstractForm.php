@@ -5,6 +5,7 @@
 
     use App\Form\Builder\Form_complex\Exception\RuntimeException;
     use App\Form\Builder\Form_complex\FormBuilderInterface;
+    use App\Form\Builder\Form_complex\FormConstructInterface;
     use App\Form\Builder\Form_complex\FormFactory;
     use App\Form\Builder\Form_complex\Helpers\ArrayHelpers;
     use App\Form\Builder\Form_complex\Helpers\FormHelpers;
@@ -13,7 +14,7 @@
     use App\Form\Builder\Form_complex\Type\ResetType;
 
 
-    abstract class AbstractForm extends AbstractOptions implements FormBuilderInterface
+    abstract class AbstractForm extends AbstractOptions implements FormBuilderInterface, FormConstructInterface
     {
         /**
          * The generated form
@@ -21,6 +22,27 @@
          * @var string
          */
         protected $form;
+
+
+
+        /**
+         * The generated form
+         *
+         * @var array
+         */
+        private $view = [];
+
+
+
+        /**
+         * The different parts of the generated form
+         *
+         * @var string
+         */
+        private $formStart;
+        private $formFields;
+        private $formButtons;
+        private $formEnd;
 
 
 
@@ -48,6 +70,135 @@
          * @var array
          */
         protected $datas = [];
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function row (string $surround, array $attributes = [], ...$fields) : ?string
+        {
+            $attr = [];
+            foreach ($attributes as $k => $v) {
+                $attr[] = $k . '="' . $v . '"';
+            }
+            $attr = implode(" ", $attr);
+            $fields = implode("\n", $fields);
+
+            $return = '<' . $surround . ' ' . $attr . '>' . "\n";
+            $return .= $fields . "\n";
+            $return .= '</' . $surround . '>';
+
+            return $return;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getView () : array
+        {
+            return $this->view;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setView () : self
+        {
+            $this->view["form"] = [
+                "start" => $this->formStart,
+                "end" => $this->formEnd
+            ];
+            $this->view["fields"] = $this->fields;
+            $this->view["buttons"] = $this->buttons;
+
+            return $this;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getFormStart() : string
+        {
+            return $this->formStart;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setFormStart() : self
+        {
+            $this->formStart = $this->view["form"]["start"];
+            return $this;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getFormFields() : array
+        {
+            return $this->formFields;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setFormFields() : self
+        {
+            $this->formFields = $this->view["fields"];
+
+            return $this;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function getFormButtons() : string
+        {
+            return $this->formButtons;
+        }
+
+
+
+        /**
+         * {@inheritdoc}
+         */
+        public function setFormButtons() : self
+        {
+            foreach ($this->view["buttons"] as $button) {
+                $this->formButtons .= $button;
+            }
+
+            return $this;
+        }
+
+
+        public function getFormEnd() : string
+        {
+                return $this->formEnd;
+        }
+
+
+
+        public function setFormEnd() : self
+        {
+                $this->formEnd = $this->view["form"]["end"];
+                return $this;
+        }
 
 
 
@@ -86,10 +237,15 @@
         {
             $tag = $formType->setTag();
 
-            $form = '<' . $tag . $attributes . '>';
-            $form .= implode(" ", $this->fields);
-            $form .= implode(" ", $this->buttons);
-            $form .= '</' . $tag . '>';
+            $start = '<' . $tag . $attributes . '>';
+            $fields = implode(" ", $this->fields);
+            $buttons = implode(" ", $this->buttons);
+            $end = '</' . $tag . '>';
+
+            $form = $start . $fields . $buttons . $end;
+
+            $this->formStart = $start;
+            $this->formEnd = $end;
 
             return $form;
         }
@@ -154,7 +310,13 @@
 
             $fields = $this->generateFormElement($label, $tag, $type, $name, $attr, $checked, $value, $options);
             $surroundField = $this->surround($fields, $surround, $surroundAttributes);
-            $this->fields[] = $surroundField;
+
+            if (substr($type, 6, -1) !== "radio") {
+                $index = $name;
+            } else {
+                $index = $name . ucfirst($mergeAttributes["id"]);
+            }
+            $this->fields[$index] = $surroundField;
 
             return $this;
         }

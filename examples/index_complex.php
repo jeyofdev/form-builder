@@ -1,30 +1,20 @@
 <?php
 
-use App\Form\Builder\Form_complex\Controller\PostController;
-use App\Form\Builder\Form_complex\Form\PostForm;
-use App\Form\Builder\Form_complex\FormBuilder;
-use App\Form\Builder\Form_complex\Type\TextType;
+    use App\Form\Builder\Form_complex\Controller\PostController;
+    use App\Form\Builder\Form_complex\Form\PostForm;
 
-// Autoloade
+
+    // Autoloader
     require dirname(__DIR__) . '/vendor/autoload.php';
 
-    // $datas = (new PostController())->new();
-    // dump($datas);
+    $_POST["postId"] = 5;
 
-    // $formBuilder = new FormBuilder($datas);
-    // $formAttr = [
-    //     "action" => "index",
-    //     "method" => "post"
-    // ];
-    // $form = $formBuilder->createFormBuilder($formAttr);
-    // $form = $formBuilder->add("task", TextType::class, [
-    //     "id" => "firstname",
-    //     "class" => "form-control",
-    // ]);
+    $postForm = new PostForm();
+    $post = new PostController();
+    $post->setForm($postForm);
 
-    // $_POST["postId"] = 5;
-    $form = (new PostForm())->generateForm($_POST);
-
+    $fields = $post->getFields();
+    extract($fields);
 ?>
 
 
@@ -38,7 +28,14 @@ use App\Form\Builder\Form_complex\Type\TextType;
 
     <body>
         <div class="container">
-            <?= $form; ?>
+            <?= $post->getStart(); ?>
+                <?= $firstname; ?>
+                <?= $password; ?>
+                <?= $content; ?>
+                <?= $postForm->row("div", ["class" => "row", "id" => "country"], $countryFrance, $countryEngland); ?>
+                <?= $postForm->row("div", ["class" => "row", "id" => "continent"], $europe, $america); ?>
+                <?= $postForm->row("div", ["class" => "row"], $post->getButtons()); ?>
+            <?= $post->getEnd(); ?>
         </div>
     </body>
 </html>

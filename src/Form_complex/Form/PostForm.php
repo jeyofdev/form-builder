@@ -1,5 +1,7 @@
 <?php
+
     namespace App\Form\Builder\Form_complex\Form;
+
 
     use App\Form\Builder\Form_complex\FormFactory;
     use App\Form\Builder\Form_complex\Type\CheckboxType;
@@ -14,13 +16,6 @@
 
     class PostForm extends AbstractForm
     {
-        /**
-         * @var FormType
-         */
-        private $formType;
-
-
-
         public function __construct ()
         {
             $this->formOption = FormFactory::createFormType();
@@ -31,12 +26,12 @@
         /**
          * {@inheritdoc}
          */
-        public function generateForm (array $datas = []) : string
+        public function generateForm (array $datas = []) : self
         {
             parent::generateForm($datas);
 
             $this
-                // ->add("postId", HiddenType::class, ["value" => $this->getValue($datas, "postId")])
+                ->add("postId", HiddenType::class, ["value" => $this->getValue($datas, "postId")])
                 ->add("firstname", TextType::class, [
                     "label" => "Firstname",
                     "label_attr" => [
@@ -97,7 +92,7 @@
                     ],
                     "id" => "europe",
                     "value" => "europe"
-                ], "div", ["class" => "form-control"])
+                ], "span", ["class" => "form-control"])
                 ->add("america", CheckboxType::class, [
                     "label" => "America",
                     "label_attr" => [
@@ -105,7 +100,7 @@
                     ],
                     "id" => "america",
                     "value" => "america"
-                ], "div", ["class" => "form-control"])
+                ], "span", ["class" => "form-control"])
                 ->add("language", SelectType::class, [
                     "label" => "Languages",
                     "label_attr" => [
@@ -130,13 +125,11 @@
                 ->submit("Submit the form", [
                     "class" => "btn btn-primary",
                     "id" => "submit-button"
-                ], "div", ["class" => "form-control"])
+                ])
                 ->reset("empty the form", [
                     "class" => "btn btn-danger",
-                    "id" => "reset-button",
-                    "disabled" => true
-                ], "div", ["class" => "form-control"])
-                ;
+                    "id" => "reset-button"
+                ]);
 
             $this->form = $this->buildForm($this->formOption, [
                 "action" => "#", 
@@ -146,6 +139,8 @@
                 "novalidate" => true
             ]);
 
-            return $this->form;
+            $this->setView();
+
+            return $this;
         }
     }
